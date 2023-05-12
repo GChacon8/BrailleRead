@@ -1,0 +1,19 @@
+// Test lexer
+
+New @isTrue?, (Bool, False);
+
+New @_variable1, (Num, 23);
+
+Values (@variable1, 51);
+
+Values (@variable1, Alter (@variable1, SUB, 3));
+
+AlterB(@variable2);
+
+Signal(1, 6);
+
+ViewSignal(5);
+
+@variable1 > 10
+
+@count <> 5
