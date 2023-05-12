@@ -1,5 +1,9 @@
 // Test lexer
 
+PrintValues();
+
+New @Test, (Num, (2 ADD 3) MUL 4 SUB 2);
+
 New @isTrue?, (Bool, False);
 
 New @_variable1, (Num, 23);

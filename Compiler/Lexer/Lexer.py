@@ -15,6 +15,7 @@ keywords = {
    'AlterB' : 'ALTERB',
    'Signal' : 'SIGNAL',
    'ViewSignal' : 'VIEWSIGNAL',
+   'PrintValues' : 'PRINTVALUES',
    'IsTrue': 'ISTRUE',
    'Repeat' : 'REPEAT',
    'Break' : 'BREAK',
@@ -33,6 +34,10 @@ tokens = [
    'COMMENT',
    'ID',
    'ARITH_OP',
+   'ADD',
+   'SUB',
+   'MUL',
+   'DIV',
    'REL_OP',
    'LPAREN',
    'RPAREN',
@@ -70,7 +75,7 @@ def t_COMMENT(t):
 # Arithmetic Operators tokens
 def t_ARITH_OP(t):
     r'ADD|SUB|MUL|DIV'
-    t.type = 'ARITH_OP'
+    t.type = t.value
     return t
 
 # Relational Operators tokens
