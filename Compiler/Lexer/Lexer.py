@@ -63,8 +63,7 @@ def t_NUMBER(t):
 
 def t_BOOLEAN(t):
     r'True|False'
-    t.value = True if t.value == 'True' else False
-    t.type = 'BOOLEAN'
+    t.value = (t.value == 'True')
     return t
 
 # No return value. Token discarded
