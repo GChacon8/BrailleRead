@@ -46,7 +46,7 @@ class IDE:
         self.console_area.place(x=10,y=470)
 
         self.lineno_area = tk.Text(self.master)
-        self.lineno_area = tk.Text(root, height=25, width=3, bg= 'gray')
+        self.lineno_area = tk.Text(root, height=25, width=3, bg= 'white')
         self.lineno_area.place(x=10,y=10)
         self.lineno_area.config(state='disabled')
 
