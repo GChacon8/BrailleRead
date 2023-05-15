@@ -76,7 +76,8 @@ def p_expression(p):
                   | expression ADD expression
                   | expression SUB expression
                   | expression MUL expression
-                  | expression DIV expression'''
+                  | expression DIV expression
+                  | expression REL_OP expression'''
     if len(p) == 2 and p.slice[1].type != 'ID':
         p[0] = p[1]
     elif len(p) == 2 and p.slice[1].type == 'ID':
@@ -95,6 +96,22 @@ def p_expression(p):
             p[0] = p[1] * p[3]
         elif operator == 'DIV':
             p[0] = p[1] / p[3]
+        elif operator in ['>=', '<=', '==', '<>', '>', '<']:
+            p[0] = evaluate_comparison(p[1], p[2], p[3])
+
+def evaluate_comparison(operand1, operator, operand2):
+    if operator == '>':
+        return operand1 > operand2
+    elif operator == '<':
+        return operand1 < operand2
+    elif operator == '>=':
+        return operand1 >= operand2
+    elif operator == '<=':
+        return operand1 <= operand2
+    elif operator == '<>':
+        return operand1 != operand2
+    elif operator == '==':
+        return operand1 == operand2
 
 def p_value(p):
     '''value : NUMBER
@@ -202,7 +219,7 @@ def p_signal_function(p):
         print("State can just be 0 or 1")
     else:
         env[position] = state
-        print((position, state))
+        #print((position, state))
 
 def p_position_state(p):
     '''position_state : expression

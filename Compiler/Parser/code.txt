@@ -2,8 +2,12 @@
 
 Proc @Master
 (
+    New @var2, (Bool, 2 > 1);
     New @foo, (Num, 33);
     New @variable1, (Num, (2 ADD 3) MUL 4 SUB 10);
+    New @var3, (Bool, @variable1 == 10);
+    PrintValues(@variable1);
+    Values(@var3, @variable1 SUB 4 > 5);
     //New @variable1, (Num, True);
     New @variable2, (Bool, True);
     //New @variable2, (Bool, False);
@@ -52,7 +56,7 @@ Proc @Master
 
     Values(@variable1, 2 ADD @_var1_);
 
-    New @wz, (Bool, False);
+    New @wz, (Bool, True);
     IsTrue(@wz);
 
     New @xy, (Bool, IsTrue(@wz));

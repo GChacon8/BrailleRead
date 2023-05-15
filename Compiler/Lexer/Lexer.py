@@ -40,6 +40,12 @@ tokens = [
    'MUL',
    'DIV',
    'REL_OP',
+   'GREATER_THAN',
+   'LESS_THAN',
+   'GREATER_THAN_EQUAL',
+   'LESS_THAN_EQUAL',
+   'NOT_EQUAL',
+   'EQUAL',
    'LPAREN',
    'RPAREN',
    'AT',
@@ -53,6 +59,13 @@ t_RPAREN = r'\)'
 t_AT = r'\@'
 t_COMMA = r'\,'
 t_SEMICOLON = r'\;'
+
+t_GREATER_THAN = r'>'
+t_LESS_THAN = r'<'
+t_GREATER_THAN_EQUAL = r'>='
+t_LESS_THAN_EQUAL = r'<='
+t_NOT_EQUAL = r'<>'
+t_EQUAL = r'=='
 
 # A string containing ignored characters (spaces and tabs)
 t_ignore = ' \t'
