@@ -5,6 +5,7 @@ keywords = {
    'New' : 'NEW',
    'Num' : 'NUM',
    'Bool' : 'BOOL',
+   'String': 'STRING',
    'True' : 'TRUE',
    'False' : 'False',
    'Proc' : 'PROC',
@@ -66,6 +67,11 @@ def t_BOOLEAN(t):
     t.value = (t.value == 'True')
     return t
 
+def t_STRING(t):
+    r'\".*?\"'
+    t.value = t.value[1:-1]
+    return t
+
 # No return value. Token discarded
 def t_COMMENT(t):
     r'\/\/.*'
@@ -121,12 +127,12 @@ lexer = lex.lex()
 
 # Test it out
 # Open the file and read its contents
-with open("code.txt", "r") as file:
-    data = file.read()
+#with open("code.txt", "r") as file:
+#    data = file.read()
 
 # Give the lexer some input
-lexer.input(data)
+#lexer.input(data)
 
 # Tokenize
-for tok in lexer:
-    print(tok)
+#for tok in lexer:
+#    print(tok)

@@ -1,0 +1,59 @@
+// Test parser
+
+Proc @Master
+(
+    New @foo, (Num, 33);
+    New @variable1, (Num, (2 ADD 3) MUL 4 SUB 10);
+    //New @variable1, (Num, True);
+    New @variable2, (Bool, True);
+    //New @variable2, (Bool, False);
+    New @variable3, (String, "Emanuel");
+    New @equals?, (Bool, True);
+    PrintValues("Antes: ", @variable1);
+    Values(@variable1, 2 ADD 3 MUL 5 ADD 22);
+    PrintValues("Despues: ", @variable1);
+    Values(@variable2, False);
+    Call();
+
+    New @_var1_, (Num, 100);
+
+    Alter(@variable1, SUB, 4);
+    Values(@variable1, Alter(@_var1_, SUB, 25));
+    New @a, (Bool, True);
+
+    AlterB (@variable2);
+    AlterB (@equals?);
+
+    PrintValues("Hello World!");
+    PrintValues(@variable1);
+
+    Values(@variable1, 1);
+    PrintValues("Este es el proyecto numero ", @variable1, " de Compi 2023");
+
+    PrintValues("Hola me llamo Emanuel ", @variable1, " tambien tengo ", @_var1_);
+
+    New @edad, (Num, 23);
+    //Values(@variable3, "Juan Manuel Santo da Silva");
+    PrintValues("Hola me llamo ", @variable3, " y tengo ", @edad, " anos");
+
+    New @position1, (Num, 1 ADD 3);
+    New @state1, (Num, 1);
+    Signal(@position1, @state1);
+
+    ViewSignal(@foo);
+
+    PrintValues("State for position ", @position1, " is : ", ViewSignal(4));
+    PrintValues("State for position 1", " is : ", ViewSignal(1));
+
+    New @let, (Num, ViewSignal(@position1));
+    Values(@foo, ViewSignal(@position1));
+
+    New @abc, (String, @variable3);
+
+    Values(@variable1, 2 ADD @_var1_);
+
+    New @wz, (Bool, False);
+    IsTrue(@wz);
+
+    New @xy, (Bool, IsTrue(@wz));
+);
