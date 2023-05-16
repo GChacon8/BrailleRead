@@ -10,6 +10,7 @@ class IDE:
         self.master.title("BrailleRead IDE")
         self.master.geometry("1100x650")
         self.master.resizable(False, False)
+        self.master.configure(bg= '#1E1E1E')
         self.create_widgets()
 
     def create_widgets(self):
@@ -27,51 +28,36 @@ class IDE:
         prog_menu.add_command(label="Compile")
         prog_menu.add_command(label="Run")
         
-       
         self.master.config(menu=menubar)
 
         # Crea un área de texto para editar el código.
         self.coding_area = tk.Text(self.master)
-        self.coding_area = tk.Text(root, height=25, width=129, bg= "black")
-        self.coding_area.configure(fg='aqua')
+        self.coding_area = tk.Text(root, height=25, width=129, bg= "#1E1E1E", fg='aqua')
         self.coding_area.place(x=50,y=10)
         self.coding_area.bind('<Key>', self.line_number)
         self.coding_area.bind('<Motion>', self.line_number)
         self.coding_area.bind('<MouseWheel>', self.line_number)
 
         self.error_area = tk.Text(self.master)
-        self.error_area = tk.Text(root, height=10, width=134, bg= "black")
-        self.error_area.configure(fg='aqua')
+        self.error_area = tk.Text(root, height=10, width=134, bg= "#1E1E1E", fg='light gray', state='disabled')
         self.error_area.place(x=10,y=470)
         
         self.console_area = tk.Text(self.master)
-        self.console_area = tk.Text(root, height=10, width=134, bg= "black")
-        self.console_area.configure(fg='aqua')
+        self.console_area = tk.Text(root, height=10, width=134, bg= "#1E1E1E", fg='light gray', state='disabled')
         self.console_area.place(x=10,y=470)
         
-
         self.lineno_area = tk.Text(self.master)
-        self.lineno_area = tk.Text(root, height=25, width=3, bg= 'black')
-        self.lineno_area.configure(fg='aqua')
+        self.lineno_area = tk.Text(root, height=25, width=3, bg= '#1E1E1E', fg='light gray', bd=0)
         self.lineno_area.place(x=10,y=10)
         self.lineno_area.config(state='disabled')
 
         self.console_button = tk.Button(self.master)
-        self.console_button = tk.Button(root, text="Console", command= self.display_console)
-        self.console_button.place(x = 15, y = 430)
-         # Establecer el color de fondo del botón
-        self.console_button.configure(bg='#1c1c1c')
-        # Establecer el color de la letra del botón
-        self.console_button.configure(fg='white')
-        
+        self.console_button = tk.Button(root, text="Console", command= self.display_console, bg='#1E1E1E', fg='light gray', font= ('Segoe UI', '10', 'bold', 'underline'), bd=0)
+        self.console_button.place(x = 15, y = 440)
 
         self.errors_button = tk.Button(self.master)
-        self.errors_button = tk.Button(root, text="Errors", command= self.display_errors)
-        # Establecer el color de fondo del botón
-        self.errors_button.configure(bg='#1c1c1c')
-        # Establecer el color de la letra del botón
-        self.errors_button.configure(fg='white')
-        self.errors_button.place(x = 80, y = 430)
+        self.errors_button = tk.Button(root, text="Errors", command= self.display_errors, bg='#1E1E1E', fg='light gray', font= ('Segoe UI', '10'), bd=0)
+        self.errors_button.place(x = 80, y = 440)
 
         # Función para deshacer
        #def undo(event):
@@ -103,10 +89,14 @@ class IDE:
     def display_console(self):
         self.error_area.place_forget()
         self.console_area.place(x=10,y=470)
+        self.console_button.config(font= ('Segoe UI', '10', 'bold', 'underline'))
+        self.errors_button.config(font= ('Segoe UI', '10'))
     
     def display_errors(self):
         self.console_area.place_forget()
         self.error_area.place(x=10,y=470)
+        self.errors_button.config(font= ('Segoe UI', '10', 'bold', 'underline'))
+        self.console_button.config(font= ('Segoe UI', '10'))
     
     def line_number(self, event):
         last_line = self.coding_area.index(tk.END)
@@ -120,8 +110,6 @@ class IDE:
             self.lineno_area.insert(tk.END, "\n")
         self.lineno_area.config(state="disable")
 
-
 root = tk.Tk()
 app = IDE(root)
-root.configure(bg='black')
 root.mainloop()
