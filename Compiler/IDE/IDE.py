@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 from tkinter.filedialog import asksaveasfilename, askopenfilename
+#import keyboard
 
 class IDE:
 
@@ -31,32 +32,52 @@ class IDE:
 
         # Crea un área de texto para editar el código.
         self.coding_area = tk.Text(self.master)
-        self.coding_area = tk.Text(root, height=25, width=129)
+        self.coding_area = tk.Text(root, height=25, width=129, bg= "black")
+        self.coding_area.configure(fg='aqua')
         self.coding_area.place(x=50,y=10)
         self.coding_area.bind('<Key>', self.line_number)
         self.coding_area.bind('<Motion>', self.line_number)
         self.coding_area.bind('<MouseWheel>', self.line_number)
 
         self.error_area = tk.Text(self.master)
-        self.error_area = tk.Text(root, height=10, width=134)
+        self.error_area = tk.Text(root, height=10, width=134, bg= "black")
+        self.error_area.configure(fg='aqua')
         self.error_area.place(x=10,y=470)
         
         self.console_area = tk.Text(self.master)
-        self.console_area = tk.Text(root, height=10, width=134)
+        self.console_area = tk.Text(root, height=10, width=134, bg= "black")
+        self.console_area.configure(fg='aqua')
         self.console_area.place(x=10,y=470)
+        
 
         self.lineno_area = tk.Text(self.master)
-        self.lineno_area = tk.Text(root, height=25, width=3, bg= 'white')
+        self.lineno_area = tk.Text(root, height=25, width=3, bg= 'black')
+        self.lineno_area.configure(fg='aqua')
         self.lineno_area.place(x=10,y=10)
         self.lineno_area.config(state='disabled')
 
         self.console_button = tk.Button(self.master)
         self.console_button = tk.Button(root, text="Console", command= self.display_console)
         self.console_button.place(x = 15, y = 430)
+         # Establecer el color de fondo del botón
+        self.console_button.configure(bg='#1c1c1c')
+        # Establecer el color de la letra del botón
+        self.console_button.configure(fg='white')
+        
 
         self.errors_button = tk.Button(self.master)
         self.errors_button = tk.Button(root, text="Errors", command= self.display_errors)
+        # Establecer el color de fondo del botón
+        self.errors_button.configure(bg='#1c1c1c')
+        # Establecer el color de la letra del botón
+        self.errors_button.configure(fg='white')
         self.errors_button.place(x = 80, y = 430)
+
+        # Función para deshacer
+       #def undo(event):
+        #    self.console_area.event_generate('<Control-z>')
+        
+        #keyboard.on_press_key("ctrl", undo)
 
     def new_file(self):
         # Elimina el contenido del área de texto y muestra un mensaje.
@@ -102,4 +123,5 @@ class IDE:
 
 root = tk.Tk()
 app = IDE(root)
+root.configure(bg='black')
 root.mainloop()
