@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 from tkinter.filedialog import asksaveasfilename, askopenfilename
-from typing import Self
+
 
 
 class IDE:
@@ -70,13 +70,13 @@ class IDE:
 
         self.coding_area.bind('<Control-y>', self.redo)
 
-        self.coding_area.bind('<KeyPress>', self.check_key_press)
+        #self.coding_area.bind('<KeyPress>', self.check_key_press)
 
 
-    def check_key_press(self, event):
+    #def check_key_press(self, event):
         # Verificar si se presionó la combinación de teclas "Ctrl+S"
-        if (event.state & 0x4) and (event.keysym.lower() == 's'):
-            self.save_file()
+        #if (event.state & 0x4) and (event.keysym.lower() == 's'):
+           # self.save_file()
 
         
     def redo(self, event=None):
