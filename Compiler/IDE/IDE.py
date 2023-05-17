@@ -1,7 +1,8 @@
 import tkinter as tk
 from tkinter import messagebox
 from tkinter.filedialog import asksaveasfilename, askopenfilename
-#import keyboard
+from typing import Self
+
 
 class IDE:
 
@@ -59,12 +60,31 @@ class IDE:
         self.errors_button = tk.Button(root, text="Errors", command= self.display_errors, bg='#1E1E1E', fg='light gray', font= ('Segoe UI', '10'), bd=0)
         self.errors_button.place(x = 80, y = 440)
 
-        # Función para deshacer
-       #def undo(event):
-        #    self.console_area.event_generate('<Control-z>')
-        
-        #keyboard.on_press_key("ctrl", undo)
+        # Habilitar la funcionalidad de deshacer y rehacer
+        self.coding_area.configure(undo=True)
 
+        def undo(event):
+            self.coding_area.event_generate('<<Undo>>')
+
+        self.coding_area.bind('<Control-z>', undo)
+
+        self.coding_area.bind('<Control-y>', self.redo)
+
+        self.coding_area.bind('<KeyPress>', self.check_key_press)
+
+
+    def check_key_press(self, event):
+        # Verificar si se presionó la combinación de teclas "Ctrl+S"
+        if (event.state & 0x4) and (event.keysym.lower() == 's'):
+            self.save_file()
+
+        
+    def redo(self, event=None):
+        # Rehacer la última acción deshecha
+        self.coding_area.edit_redo()
+
+
+       
     def new_file(self):
         # Elimina el contenido del área de texto y muestra un mensaje.
         self.coding_area.delete("1.0", tk.END)
@@ -77,6 +97,7 @@ class IDE:
             with open(filepath, "r") as file:
                 self.coding_area.delete("1.0", tk.END)
                 self.coding_area.insert(tk.END, file.read())
+                
 
     def save_file(self):
         # Abre un cuadro de diálogo para seleccionar la ubicación y el nombre del archivo y guarda el contenido del área de texto.
