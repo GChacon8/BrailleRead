@@ -1,7 +1,7 @@
 import tkinter as tk
+import traceback
 from tkinter import messagebox
 from tkinter.filedialog import asksaveasfilename, askopenfilename
-
 
 
 class IDE:
@@ -27,7 +27,7 @@ class IDE:
         filemenu.add_command(label="Save File", command=self.save_file)
         
         prog_menu.add_command(label="Compile")
-        prog_menu.add_command(label="Run")
+        prog_menu.add_command(label="Run", command=self.run_program)
         
         self.master.config(menu=menubar)
 
@@ -78,7 +78,25 @@ class IDE:
         #if (event.state & 0x4) and (event.keysym.lower() == 's'):
            # self.save_file()
 
-        
+    def run_program(self):
+        try:
+            import Parser
+            result = Parser.parser()
+
+            self.console_area.config(state='normal')
+            self.console_area.delete("1.0", tk.END)
+            self.console_area.insert(tk.END, str(result) + '\n')
+            self.console_area.config(state='disabled')
+
+
+        except Exception as e:
+
+            self.console_area.config(state='normal')
+            self.console_area.delete("1.0", tk.END)
+            self.console_area.insert(tk.END, 'Error: ' + str(e) + '\n')
+            self.console_area.insert(tk.END, traceback.format_exc() + '\n')  # Imprime la traza de la excepción
+            self.console_area.config(state='disabled')
+
     def redo(self, event=None):
         # Rehacer la última acción deshecha
         self.coding_area.edit_redo()
