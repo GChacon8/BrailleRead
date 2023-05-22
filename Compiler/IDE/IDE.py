@@ -3,7 +3,6 @@ import traceback
 from tkinter import messagebox
 from tkinter.filedialog import asksaveasfilename, askopenfilename
 
-
 class IDE:
 
     def __init__(self, master):
@@ -79,30 +78,12 @@ class IDE:
            # self.save_file()
 
     def run_program(self):
-        try:
-            import Parser
-            result = Parser.parser()
-
-            self.console_area.config(state='normal')
-            self.console_area.delete("1.0", tk.END)
-            self.console_area.insert(tk.END, str(result) + '\n')
-            self.console_area.config(state='disabled')
-
-
-        except Exception as e:
-
-            self.console_area.config(state='normal')
-            self.console_area.delete("1.0", tk.END)
-            self.console_area.insert(tk.END, 'Error: ' + str(e) + '\n')
-            self.console_area.insert(tk.END, traceback.format_exc() + '\n')  # Imprime la traza de la excepción
-            self.console_area.config(state='disabled')
+        print("run")
 
     def redo(self, event=None):
         # Rehacer la última acción deshecha
         self.coding_area.edit_redo()
 
-
-       
     def new_file(self):
         # Elimina el contenido del área de texto y muestra un mensaje.
         self.coding_area.delete("1.0", tk.END)
