@@ -10,7 +10,8 @@ class IDE:
         self.master.title("BrailleRead IDE")
         self.master.geometry("1100x650")
         self.master.resizable(False, False)
-        self.master.configure(bg= '#1E1E1E')
+        self.master.configure(bg='#1E1E1E')
+        self.saved = False
         self.create_widgets()
 
     def create_widgets(self):
@@ -25,7 +26,7 @@ class IDE:
         filemenu.add_command(label="Open File", command=self.open_file)
         filemenu.add_command(label="Save File", command=self.save_file)
         
-        prog_menu.add_command(label="Compile")
+        prog_menu.add_command(label="Compile", command=self.compile_program)
         prog_menu.add_command(label="Run", command=self.run_program)
         
         self.master.config(menu=menubar)
@@ -71,40 +72,53 @@ class IDE:
 
         #self.coding_area.bind('<KeyPress>', self.check_key_press)
 
-
     #def check_key_press(self, event):
         # Verificar si se presionó la combinación de teclas "Ctrl+S"
         #if (event.state & 0x4) and (event.keysym.lower() == 's'):
            # self.save_file()
-
     def run_program(self):
-        print("run")
+        if self.saved:
+            print("Run")
+        else:
+            tk.messagebox.showinfo(message="Please save your \".br\" file before Running or Compiling", title="Unsaved File")
+
+    def compile_program(self):
+        if self.saved:
+            print("Compile")
+        else:
+            tk.messagebox.showinfo(message="Please save your \".br\" file before Running or Compiling", title="Unsaved File")
 
     def redo(self, event=None):
         # Rehacer la última acción deshecha
-        self.coding_area.edit_redo()
+        try:
+            self.coding_area.edit_redo()
+        except:
+            pass
 
     def new_file(self):
         # Elimina el contenido del área de texto y muestra un mensaje.
         self.coding_area.delete("1.0", tk.END)
         messagebox.showinfo("Nuevo archivo", "Se ha creado un nuevo archivo.")
+        self.saved = False
 
     def open_file(self):
         # Abre un cuadro de diálogo para seleccionar un archivo y muestra su contenido en el área de texto.
-        filepath = askopenfilename(defaultextension=".txt", filetypes=[("Text Files", "*.txt"), ("All Files", "*.*")])
+        filepath = askopenfilename(defaultextension=".br", filetypes=[("Text Files", "*.br"), ("All Files", "*.*")])
         if filepath:
             with open(filepath, "r") as file:
                 self.coding_area.delete("1.0", tk.END)
                 self.coding_area.insert(tk.END, file.read())
-                
 
     def save_file(self):
         # Abre un cuadro de diálogo para seleccionar la ubicación y el nombre del archivo y guarda el contenido del área de texto.
-        filepath = asksaveasfilename(defaultextension=".txt", filetypes=[("Text Files", "*.txt"), ("All Files", "*.*")])
+        filepath = asksaveasfilename(defaultextension=".br", filetypes=[("Text Files", "*.br"), ("All Files", "*.*")])
+        print(filepath)
         if filepath:
             with open(filepath, "w") as file:
                 file.write(self.coding_area.get("1.0", tk.END))
             messagebox.showinfo("Guardar archivo", "El archivo se ha guardado correctamente.")
+
+        self.saved = True
 
     def display_console(self):
         self.error_area.place_forget()
@@ -128,7 +142,7 @@ class IDE:
         for i in range(first_line_int, last_line_int):
             self.lineno_area.insert(tk.END, i+1)
             self.lineno_area.insert(tk.END, "\n")
-        self.lineno_area.config(state="disable")
+        self.lineno_area.config(state="disabled")
 
 root = tk.Tk()
 app = IDE(root)
