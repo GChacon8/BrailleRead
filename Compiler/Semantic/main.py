@@ -11,7 +11,6 @@ with open("code.txt", "r") as file:
 
     if not lexical_errors:
         if not syntax_errors:
-            print(res)
             program = semantic_analysis(res)
             if not program.getErrors():
                 print("\nFile compiled successfully!!!")

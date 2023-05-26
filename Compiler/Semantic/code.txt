@@ -2,16 +2,12 @@
 
 Proc @Master
 (
-    // A
-    Signal(1, 1);
-
-    // B
-    Signal(1, 1);
-    Signal(3, 1);
-
-    // C
-    Signal(1, 1);
+    New @name, (String, "Emanuel");
+    New @age, (Num, 23);
+    PrintValues("Hola me llamo ", @name, " y mi edad es: ", @age);
+    New @single, (Bool, True);
+    PrintValues(IsTrue(@single));
+    PrintValues("El estado del motor 2 es: ", ViewSignal(2));
     Signal(2, 1);
-
-    Show("ABC");
+    PrintValues("El estado del motor 2 es: ", ViewSignal(2));
 );

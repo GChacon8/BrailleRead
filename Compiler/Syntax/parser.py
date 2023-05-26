@@ -28,8 +28,7 @@ def p_procedure_set(p):
 
 
 def p_procedure_set_2(p):
-    '''procedure_set : procedure
-                     | empty'''
+    '''procedure_set : procedure'''
     p[0] = [p[1]]
 
 
@@ -61,7 +60,8 @@ def p_statement(p):
                  | is_true_function SEMICOLON
                  | case_statement SEMICOLON
                  | procedure_call SEMICOLON
-                 | print_statement SEMICOLON'''
+                 | print_statement SEMICOLON
+                 | empty'''
     p[0] = p[1]
 
 
@@ -179,8 +179,7 @@ def p_signal_function(p):
 
 
 def p_position_state(p):
-    '''position_state : value
-                      | ID'''
+    '''position_state : value'''
     p[0] = value(p[1])
 
 
@@ -191,7 +190,7 @@ def p_view_signal_function(p):
 
 def p_is_true_function(p):
     '''is_true_function : IS_TRUE LPAREN ID RPAREN'''
-    p[0] = IsTrue(p[1], p[3])
+    p[0] = IsTrueFunction(p[1], p[3])
 
 
 def p_case_statement(p):
@@ -218,8 +217,7 @@ def p_when_statement(p):
 
 
 def p_else_option(p):
-    '''else_option : ELSE LPAREN statements RPAREN
-                   | empty'''
+    '''else_option : ELSE LPAREN statements RPAREN'''
     p[0] = p[3]
 
 
@@ -230,28 +228,26 @@ def p_procedure_call(p):
 
 def p_print_statement(p):
     '''print_statement : PRINT_VALUES LPAREN print_value_list RPAREN'''
-    p[0] = p[3]
+    p[0] = PrintValues(p[1], p[3])
 
 
 def p_print_value_list(p):
     '''print_value_list : print_value
-                        | print_value_list COMMA print_value'''
+                        | print_value COMMA print_value_list'''
     if len(p) == 2:
-        p[0] = p[1]
+        p[0] = [p[1]]
     else:
-        p[0] = [p[1], p[3]]
-
+        p[0] = [p[1]] + p[3]
 
 def p_print_value(p):
-    '''print_value : STRING
-                   | ID
+    '''print_value : value
+                   | is_true_function
                    | view_signal_function'''
     p[0] = p[1]
 
-
 def p_empty(p):
     '''empty : '''
-    p[0] = None
+    pass
 
 
 def p_error(p):

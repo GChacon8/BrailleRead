@@ -181,12 +181,15 @@ class ViewSignalFunction(Instruction):
         if position in [1, 2, 3, 4, 5, 6]:
             symbol = searchSymbolByID(str(position), program, symbolTable)
             self.result = symbol.value
-            print("The result for position " + str(position) + " is: " + str(self.result))
         else:
             program.semanticError.badPosition(position)
 
+    def getResult(self, program, symbolTable):
+        self.eval(program, symbolTable)
+        return self.result
 
-class IsTrue(Instruction):
+
+class IsTrueFunction(Instruction):
     def __init__(self, func, ID):
         self.func = func
         self.ID = ID
@@ -198,9 +201,12 @@ class IsTrue(Instruction):
         if symbol:
             if getType(symbol.value) == "Bool":
                 self.result = symbol.value
-                print(self.result)
             else:
                 program.semanticError.variableNotBoolean(self.ID)
+
+    def getResult(self, program, symbolTable):
+        self.eval(program, symbolTable)
+        return self.result
 
 
 class CaseStatement(Instruction):
@@ -235,3 +241,31 @@ class CaseStatement(Instruction):
 
         for variable in self.local_variables:
             symbolTable.removeSymbolByID(variable)
+
+
+class PrintValues(Instruction):
+    def __init__(self, func, print_value_list):
+        self.func = func
+        self.print_value_list = print_value_list
+        self.scope = "local"
+        self.result = ""
+
+    def eval(self, program, symbolTable):
+        for expression in self.print_value_list:
+            if verifyType(expression, value):
+                prev_result = expression.getValue(program, symbolTable)
+                if prev_result is None:
+                    return
+                if isinstance(prev_result, str):
+                    self.result += prev_result
+                else:
+                    self.result += str(prev_result)
+
+            elif verifyType(expression, IsTrueFunction) or verifyType(expression, ViewSignalFunction):
+                prev_result = expression.getResult(program, symbolTable)
+                if prev_result is None:
+                    return
+                else:
+                    self.result += str(prev_result)
+
+        print(self.result)
