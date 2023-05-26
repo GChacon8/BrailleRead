@@ -40,6 +40,13 @@ class value(Instruction):
         return result
 
 
+class Break(Instruction):
+    def __init__(self, func):
+        self.func = func
+
+    def eval(self, program, symbolTable):
+        pass
+
 class VariableDeclaration(Instruction):
     def __init__(self, func, ID, type_value):
         self.func = func
@@ -300,6 +307,44 @@ class UntilStatement(Instruction):
                 symbolTable.removeSymbolByID(variable)
 
             result = not(self.condition.getResult(program, symbolTable))
+
+
+class RepeatStatement(Instruction):
+    def __init__(self, func, expressions):
+        self.func = func
+        self.expressions = expressions
+        self.local_variables = []
+        self.scope = "local"
+
+    def eval(self, program, symbolTable):
+        has_break = None
+        for expression in self.expressions:
+            if verifyType(expression, Break):
+                has_break = True
+                break
+
+        if has_break is None:
+            program.semanticError.notBreak()
+            return
+
+        result = True
+        while result:
+            for expression in self.expressions:
+                if expression:
+                    if verifyType(expression, VariableDeclaration):
+                        expression.scope = "local"
+                    expression.eval(program, symbolTable)
+
+                    if expression.func == "New":
+                        if symbolTable.getSymbolByID(expression.ID):
+                            self.local_variables.append(expression.ID)
+
+                    if verifyType(expression, Break):
+                        result = False
+                        break
+
+            for variable in self.local_variables:
+                symbolTable.removeSymbolByID(variable)
 
 
 class PrintValues(Instruction):

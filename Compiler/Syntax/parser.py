@@ -61,8 +61,10 @@ def p_statement(p):
                  | case_statement SEMICOLON
                  | while_statement SEMICOLON
                  | until_statement SEMICOLON
+                 | repeat_statement SEMICOLON
                  | procedure_call SEMICOLON
                  | print_statement SEMICOLON
+                 | break SEMICOLON
                  | empty'''
     p[0] = p[1]
 
@@ -238,6 +240,12 @@ def p_until_statement(p):
     '''until_statement : UNTIL LPAREN statements RPAREN condition'''
     p[0] = UntilStatement(p[1], p[3], p[5])
 
+
+def p_repeat_statement(p):
+    '''repeat_statement : REPEAT LPAREN statements RPAREN'''
+    p[0] = RepeatStatement(p[1], p[3])
+
+
 def p_procedure_call(p):
     '''procedure_call : CALL LPAREN ID RPAREN'''
     p[0] = p[3]
@@ -256,11 +264,17 @@ def p_print_value_list(p):
     else:
         p[0] = [p[1]] + p[3]
 
+
 def p_print_value(p):
     '''print_value : value
                    | is_true_function
                    | view_signal_function'''
     p[0] = p[1]
+
+
+def p_break(p):
+    '''break : BREAK'''
+    p[0] = Break(p[1])
 
 def p_empty(p):
     '''empty : '''

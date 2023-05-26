@@ -66,3 +66,6 @@ class SemanticError:
 
     def badState(self, state):
         self.errors.append(f"Semantic error: State can just be 0 or 1. You set {state}")
+
+    def notBreak(self):
+        self.errors.append(f"Semantic error: Repeat does not contain break")

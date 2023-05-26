@@ -2,10 +2,13 @@
 
 Proc @Master
 (
-    New @variable1, (Num, 1);
-    Until (
-        PrintValues("El valor de '@variable1' es: ", @variable1);
+    Repeat (
+        PrintValues("Hola");
+        Signal(2, 1);
         Signal(3, 1);
-        Values(@variable1, Alter(@variable1, ADD, 1));
-    ) @variable1 > 10;
+        Break;
+        Signal(2, 0);
+        Signal(3, 0);
+        PrintValues("Adios");
+    );
 );
