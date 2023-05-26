@@ -1,0 +1,2126 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    ARITH_OP
+    AT
+    BREAK
+    COMMENT
+    EQUAL
+    False
+    GREATER_THAN
+    GREATER_THAN_EQUAL
+    LESS_THAN
+    LESS_THAN_EQUAL
+    MASTER
+    NOT_EQUAL
+    REPEAT
+    TRUE
+    UNTIL
+    WHILE
+
+Grammar
+
+Rule 0     S' -> program
+Rule 1     program -> procedure_set
+Rule 2     procedure_set -> procedure procedure_set
+Rule 3     procedure_set -> procedure
+Rule 4     procedure_set -> empty
+Rule 5     procedure -> PROC ID LPAREN statements RPAREN SEMICOLON
+Rule 6     statements -> statement
+Rule 7     statements -> statement statements
+Rule 8     statement -> variable_declaration SEMICOLON
+Rule 9     statement -> variable_update SEMICOLON
+Rule 10    statement -> alter_variable SEMICOLON
+Rule 11    statement -> variable_with_alter SEMICOLON
+Rule 12    statement -> alter_b_variable SEMICOLON
+Rule 13    statement -> signal_function SEMICOLON
+Rule 14    statement -> view_signal_function SEMICOLON
+Rule 15    statement -> is_true_function SEMICOLON
+Rule 16    statement -> case_statement SEMICOLON
+Rule 17    statement -> procedure_call SEMICOLON
+Rule 18    statement -> print_statement SEMICOLON
+Rule 19    variable_declaration -> NEW ID COMMA type_value
+Rule 20    type_value -> LPAREN type COMMA value RPAREN
+Rule 21    type -> NUM
+Rule 22    type -> BOOL
+Rule 23    type -> STRING
+Rule 24    value -> NUMBER
+Rule 25    value -> BOOLEAN
+Rule 26    value -> STRING
+Rule 27    value -> ID
+Rule 28    value -> arith_op
+Rule 29    arith_op -> math_operation
+Rule 30    math_operation -> math_operation operator math_operation
+Rule 31    math_operation -> math_operation operator math_value
+Rule 32    math_operation -> math_value operator math_operation
+Rule 33    math_operation -> math_value operator math_value
+Rule 34    math_operation_paren -> LPAREN math_operation RPAREN
+Rule 35    math_value -> ID
+Rule 36    math_value -> NUMBER
+Rule 37    math_value -> math_value_negative
+Rule 38    math_value -> math_operation_paren
+Rule 39    math_value_negative -> SUB ID
+Rule 40    math_value_negative -> SUB NUMBER
+Rule 41    operator -> ADD
+Rule 42    operator -> SUB
+Rule 43    operator -> MUL
+Rule 44    operator -> DIV
+Rule 45    operator -> REL_OP
+Rule 46    variable_update -> VALUES LPAREN ID COMMA value RPAREN
+Rule 47    alter_variable -> ALTER LPAREN ID COMMA operator COMMA value RPAREN
+Rule 48    variable_with_alter -> VALUES LPAREN ID COMMA alter_variable RPAREN
+Rule 49    alter_b_variable -> ALTER_B LPAREN ID RPAREN
+Rule 50    signal_function -> SIGNAL LPAREN position_state COMMA position_state RPAREN
+Rule 51    position_state -> value
+Rule 52    position_state -> ID
+Rule 53    view_signal_function -> VIEW_SIGNAL LPAREN position_state RPAREN
+Rule 54    is_true_function -> IS_TRUE LPAREN ID RPAREN
+Rule 55    case_statement -> CASE ID case_options
+Rule 56    case_statement -> CASE ID case_options else_option
+Rule 57    case_options -> when_statement
+Rule 58    case_options -> when_statement case_options
+Rule 59    when_statement -> WHEN value THEN LPAREN statements RPAREN
+Rule 60    else_option -> ELSE LPAREN statements RPAREN
+Rule 61    else_option -> empty
+Rule 62    procedure_call -> CALL LPAREN ID RPAREN
+Rule 63    print_statement -> PRINT_VALUES LPAREN print_value_list RPAREN
+Rule 64    print_value_list -> print_value
+Rule 65    print_value_list -> print_value_list COMMA print_value
+Rule 66    print_value -> STRING
+Rule 67    print_value -> ID
+Rule 68    print_value -> view_signal_function
+Rule 69    empty -> <empty>
+
+Terminals, with rules where they appear
+
+ADD                  : 41
+ALTER                : 47
+ALTER_B              : 49
+ARITH_OP             : 
+AT                   : 
+BOOL                 : 22
+BOOLEAN              : 25
+BREAK                : 
+CALL                 : 62
+CASE                 : 55 56
+COMMA                : 19 20 46 47 47 48 50 65
+COMMENT              : 
+DIV                  : 44
+ELSE                 : 60
+EQUAL                : 
+False                : 
+GREATER_THAN         : 
+GREATER_THAN_EQUAL   : 
+ID                   : 5 19 27 35 39 46 47 48 49 52 54 55 56 62 67
+IS_TRUE              : 54
+LESS_THAN            : 
+LESS_THAN_EQUAL      : 
+LPAREN               : 5 20 34 46 47 48 49 50 53 54 59 60 62 63
+MASTER               : 
+MUL                  : 43
+NEW                  : 19
+NOT_EQUAL            : 
+NUM                  : 21
+NUMBER               : 24 36 40
+PRINT_VALUES         : 63
+PROC                 : 5
+REL_OP               : 45
+REPEAT               : 
+RPAREN               : 5 20 34 46 47 48 49 50 53 54 59 60 62 63
+SEMICOLON            : 5 8 9 10 11 12 13 14 15 16 17 18
+SIGNAL               : 50
+STRING               : 23 26 66
+SUB                  : 39 40 42
+THEN                 : 59
+TRUE                 : 
+UNTIL                : 
+VALUES               : 46 48
+VIEW_SIGNAL          : 53
+WHEN                 : 59
+WHILE                : 
+error                : 
+
+Nonterminals, with rules where they appear
+
+alter_b_variable     : 12
+alter_variable       : 10 48
+arith_op             : 28
+case_options         : 55 56 58
+case_statement       : 16
+else_option          : 56
+empty                : 4 61
+is_true_function     : 15
+math_operation       : 29 30 30 31 32 34
+math_operation_paren : 38
+math_value           : 31 32 33 33
+math_value_negative  : 37
+operator             : 30 31 32 33 47
+position_state       : 50 50 53
+print_statement      : 18
+print_value          : 64 65
+print_value_list     : 63 65
+procedure            : 2 3
+procedure_call       : 17
+procedure_set        : 1 2
+program              : 0
+signal_function      : 13
+statement            : 6 7
+statements           : 5 7 59 60
+type                 : 20
+type_value           : 19
+value                : 20 46 47 51 59
+variable_declaration : 8
+variable_update      : 9
+variable_with_alter  : 11
+view_signal_function : 14 68
+when_statement       : 57 58
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . program
+    (1) program -> . procedure_set
+    (2) procedure_set -> . procedure procedure_set
+    (3) procedure_set -> . procedure
+    (4) procedure_set -> . empty
+    (5) procedure -> . PROC ID LPAREN statements RPAREN SEMICOLON
+    (69) empty -> .
+
+    PROC            shift and go to state 5
+    $end            reduce using rule 69 (empty -> .)
+
+    program                        shift and go to state 1
+    procedure_set                  shift and go to state 2
+    procedure                      shift and go to state 3
+    empty                          shift and go to state 4
+
+state 1
+
+    (0) S' -> program .
+
+
+
+state 2
+
+    (1) program -> procedure_set .
+
+    $end            reduce using rule 1 (program -> procedure_set .)
+
+
+state 3
+
+    (2) procedure_set -> procedure . procedure_set
+    (3) procedure_set -> procedure .
+    (2) procedure_set -> . procedure procedure_set
+    (3) procedure_set -> . procedure
+    (4) procedure_set -> . empty
+    (5) procedure -> . PROC ID LPAREN statements RPAREN SEMICOLON
+    (69) empty -> .
+
+  ! reduce/reduce conflict for $end resolved using rule 3 (procedure_set -> procedure .)
+    $end            reduce using rule 3 (procedure_set -> procedure .)
+    PROC            shift and go to state 5
+
+  ! $end            [ reduce using rule 69 (empty -> .) ]
+
+    procedure                      shift and go to state 3
+    procedure_set                  shift and go to state 6
+    empty                          shift and go to state 4
+
+state 4
+
+    (4) procedure_set -> empty .
+
+    $end            reduce using rule 4 (procedure_set -> empty .)
+
+
+state 5
+
+    (5) procedure -> PROC . ID LPAREN statements RPAREN SEMICOLON
+
+    ID              shift and go to state 7
+
+
+state 6
+
+    (2) procedure_set -> procedure procedure_set .
+
+    $end            reduce using rule 2 (procedure_set -> procedure procedure_set .)
+
+
+state 7
+
+    (5) procedure -> PROC ID . LPAREN statements RPAREN SEMICOLON
+
+    LPAREN          shift and go to state 8
+
+
+state 8
+
+    (5) procedure -> PROC ID LPAREN . statements RPAREN SEMICOLON
+    (6) statements -> . statement
+    (7) statements -> . statement statements
+    (8) statement -> . variable_declaration SEMICOLON
+    (9) statement -> . variable_update SEMICOLON
+    (10) statement -> . alter_variable SEMICOLON
+    (11) statement -> . variable_with_alter SEMICOLON
+    (12) statement -> . alter_b_variable SEMICOLON
+    (13) statement -> . signal_function SEMICOLON
+    (14) statement -> . view_signal_function SEMICOLON
+    (15) statement -> . is_true_function SEMICOLON
+    (16) statement -> . case_statement SEMICOLON
+    (17) statement -> . procedure_call SEMICOLON
+    (18) statement -> . print_statement SEMICOLON
+    (19) variable_declaration -> . NEW ID COMMA type_value
+    (46) variable_update -> . VALUES LPAREN ID COMMA value RPAREN
+    (47) alter_variable -> . ALTER LPAREN ID COMMA operator COMMA value RPAREN
+    (48) variable_with_alter -> . VALUES LPAREN ID COMMA alter_variable RPAREN
+    (49) alter_b_variable -> . ALTER_B LPAREN ID RPAREN
+    (50) signal_function -> . SIGNAL LPAREN position_state COMMA position_state RPAREN
+    (53) view_signal_function -> . VIEW_SIGNAL LPAREN position_state RPAREN
+    (54) is_true_function -> . IS_TRUE LPAREN ID RPAREN
+    (55) case_statement -> . CASE ID case_options
+    (56) case_statement -> . CASE ID case_options else_option
+    (62) procedure_call -> . CALL LPAREN ID RPAREN
+    (63) print_statement -> . PRINT_VALUES LPAREN print_value_list RPAREN
+
+    NEW             shift and go to state 22
+    VALUES          shift and go to state 23
+    ALTER           shift and go to state 24
+    ALTER_B         shift and go to state 25
+    SIGNAL          shift and go to state 26
+    VIEW_SIGNAL     shift and go to state 27
+    IS_TRUE         shift and go to state 28
+    CASE            shift and go to state 29
+    CALL            shift and go to state 30
+    PRINT_VALUES    shift and go to state 31
+
+    statements                     shift and go to state 9
+    statement                      shift and go to state 10
+    variable_declaration           shift and go to state 11
+    variable_update                shift and go to state 12
+    alter_variable                 shift and go to state 13
+    variable_with_alter            shift and go to state 14
+    alter_b_variable               shift and go to state 15
+    signal_function                shift and go to state 16
+    view_signal_function           shift and go to state 17
+    is_true_function               shift and go to state 18
+    case_statement                 shift and go to state 19
+    procedure_call                 shift and go to state 20
+    print_statement                shift and go to state 21
+
+state 9
+
+    (5) procedure -> PROC ID LPAREN statements . RPAREN SEMICOLON
+
+    RPAREN          shift and go to state 32
+
+
+state 10
+
+    (6) statements -> statement .
+    (7) statements -> statement . statements
+    (6) statements -> . statement
+    (7) statements -> . statement statements
+    (8) statement -> . variable_declaration SEMICOLON
+    (9) statement -> . variable_update SEMICOLON
+    (10) statement -> . alter_variable SEMICOLON
+    (11) statement -> . variable_with_alter SEMICOLON
+    (12) statement -> . alter_b_variable SEMICOLON
+    (13) statement -> . signal_function SEMICOLON
+    (14) statement -> . view_signal_function SEMICOLON
+    (15) statement -> . is_true_function SEMICOLON
+    (16) statement -> . case_statement SEMICOLON
+    (17) statement -> . procedure_call SEMICOLON
+    (18) statement -> . print_statement SEMICOLON
+    (19) variable_declaration -> . NEW ID COMMA type_value
+    (46) variable_update -> . VALUES LPAREN ID COMMA value RPAREN
+    (47) alter_variable -> . ALTER LPAREN ID COMMA operator COMMA value RPAREN
+    (48) variable_with_alter -> . VALUES LPAREN ID COMMA alter_variable RPAREN
+    (49) alter_b_variable -> . ALTER_B LPAREN ID RPAREN
+    (50) signal_function -> . SIGNAL LPAREN position_state COMMA position_state RPAREN
+    (53) view_signal_function -> . VIEW_SIGNAL LPAREN position_state RPAREN
+    (54) is_true_function -> . IS_TRUE LPAREN ID RPAREN
+    (55) case_statement -> . CASE ID case_options
+    (56) case_statement -> . CASE ID case_options else_option
+    (62) procedure_call -> . CALL LPAREN ID RPAREN
+    (63) print_statement -> . PRINT_VALUES LPAREN print_value_list RPAREN
+
+    RPAREN          reduce using rule 6 (statements -> statement .)
+    NEW             shift and go to state 22
+    VALUES          shift and go to state 23
+    ALTER           shift and go to state 24
+    ALTER_B         shift and go to state 25
+    SIGNAL          shift and go to state 26
+    VIEW_SIGNAL     shift and go to state 27
+    IS_TRUE         shift and go to state 28
+    CASE            shift and go to state 29
+    CALL            shift and go to state 30
+    PRINT_VALUES    shift and go to state 31
+
+    statement                      shift and go to state 10
+    statements                     shift and go to state 33
+    variable_declaration           shift and go to state 11
+    variable_update                shift and go to state 12
+    alter_variable                 shift and go to state 13
+    variable_with_alter            shift and go to state 14
+    alter_b_variable               shift and go to state 15
+    signal_function                shift and go to state 16
+    view_signal_function           shift and go to state 17
+    is_true_function               shift and go to state 18
+    case_statement                 shift and go to state 19
+    procedure_call                 shift and go to state 20
+    print_statement                shift and go to state 21
+
+state 11
+
+    (8) statement -> variable_declaration . SEMICOLON
+
+    SEMICOLON       shift and go to state 34
+
+
+state 12
+
+    (9) statement -> variable_update . SEMICOLON
+
+    SEMICOLON       shift and go to state 35
+
+
+state 13
+
+    (10) statement -> alter_variable . SEMICOLON
+
+    SEMICOLON       shift and go to state 36
+
+
+state 14
+
+    (11) statement -> variable_with_alter . SEMICOLON
+
+    SEMICOLON       shift and go to state 37
+
+
+state 15
+
+    (12) statement -> alter_b_variable . SEMICOLON
+
+    SEMICOLON       shift and go to state 38
+
+
+state 16
+
+    (13) statement -> signal_function . SEMICOLON
+
+    SEMICOLON       shift and go to state 39
+
+
+state 17
+
+    (14) statement -> view_signal_function . SEMICOLON
+
+    SEMICOLON       shift and go to state 40
+
+
+state 18
+
+    (15) statement -> is_true_function . SEMICOLON
+
+    SEMICOLON       shift and go to state 41
+
+
+state 19
+
+    (16) statement -> case_statement . SEMICOLON
+
+    SEMICOLON       shift and go to state 42
+
+
+state 20
+
+    (17) statement -> procedure_call . SEMICOLON
+
+    SEMICOLON       shift and go to state 43
+
+
+state 21
+
+    (18) statement -> print_statement . SEMICOLON
+
+    SEMICOLON       shift and go to state 44
+
+
+state 22
+
+    (19) variable_declaration -> NEW . ID COMMA type_value
+
+    ID              shift and go to state 45
+
+
+state 23
+
+    (46) variable_update -> VALUES . LPAREN ID COMMA value RPAREN
+    (48) variable_with_alter -> VALUES . LPAREN ID COMMA alter_variable RPAREN
+
+    LPAREN          shift and go to state 46
+
+
+state 24
+
+    (47) alter_variable -> ALTER . LPAREN ID COMMA operator COMMA value RPAREN
+
+    LPAREN          shift and go to state 47
+
+
+state 25
+
+    (49) alter_b_variable -> ALTER_B . LPAREN ID RPAREN
+
+    LPAREN          shift and go to state 48
+
+
+state 26
+
+    (50) signal_function -> SIGNAL . LPAREN position_state COMMA position_state RPAREN
+
+    LPAREN          shift and go to state 49
+
+
+state 27
+
+    (53) view_signal_function -> VIEW_SIGNAL . LPAREN position_state RPAREN
+
+    LPAREN          shift and go to state 50
+
+
+state 28
+
+    (54) is_true_function -> IS_TRUE . LPAREN ID RPAREN
+
+    LPAREN          shift and go to state 51
+
+
+state 29
+
+    (55) case_statement -> CASE . ID case_options
+    (56) case_statement -> CASE . ID case_options else_option
+
+    ID              shift and go to state 52
+
+
+state 30
+
+    (62) procedure_call -> CALL . LPAREN ID RPAREN
+
+    LPAREN          shift and go to state 53
+
+
+state 31
+
+    (63) print_statement -> PRINT_VALUES . LPAREN print_value_list RPAREN
+
+    LPAREN          shift and go to state 54
+
+
+state 32
+
+    (5) procedure -> PROC ID LPAREN statements RPAREN . SEMICOLON
+
+    SEMICOLON       shift and go to state 55
+
+
+state 33
+
+    (7) statements -> statement statements .
+
+    RPAREN          reduce using rule 7 (statements -> statement statements .)
+
+
+state 34
+
+    (8) statement -> variable_declaration SEMICOLON .
+
+    NEW             reduce using rule 8 (statement -> variable_declaration SEMICOLON .)
+    VALUES          reduce using rule 8 (statement -> variable_declaration SEMICOLON .)
+    ALTER           reduce using rule 8 (statement -> variable_declaration SEMICOLON .)
+    ALTER_B         reduce using rule 8 (statement -> variable_declaration SEMICOLON .)
+    SIGNAL          reduce using rule 8 (statement -> variable_declaration SEMICOLON .)
+    VIEW_SIGNAL     reduce using rule 8 (statement -> variable_declaration SEMICOLON .)
+    IS_TRUE         reduce using rule 8 (statement -> variable_declaration SEMICOLON .)
+    CASE            reduce using rule 8 (statement -> variable_declaration SEMICOLON .)
+    CALL            reduce using rule 8 (statement -> variable_declaration SEMICOLON .)
+    PRINT_VALUES    reduce using rule 8 (statement -> variable_declaration SEMICOLON .)
+    RPAREN          reduce using rule 8 (statement -> variable_declaration SEMICOLON .)
+
+
+state 35
+
+    (9) statement -> variable_update SEMICOLON .
+
+    NEW             reduce using rule 9 (statement -> variable_update SEMICOLON .)
+    VALUES          reduce using rule 9 (statement -> variable_update SEMICOLON .)
+    ALTER           reduce using rule 9 (statement -> variable_update SEMICOLON .)
+    ALTER_B         reduce using rule 9 (statement -> variable_update SEMICOLON .)
+    SIGNAL          reduce using rule 9 (statement -> variable_update SEMICOLON .)
+    VIEW_SIGNAL     reduce using rule 9 (statement -> variable_update SEMICOLON .)
+    IS_TRUE         reduce using rule 9 (statement -> variable_update SEMICOLON .)
+    CASE            reduce using rule 9 (statement -> variable_update SEMICOLON .)
+    CALL            reduce using rule 9 (statement -> variable_update SEMICOLON .)
+    PRINT_VALUES    reduce using rule 9 (statement -> variable_update SEMICOLON .)
+    RPAREN          reduce using rule 9 (statement -> variable_update SEMICOLON .)
+
+
+state 36
+
+    (10) statement -> alter_variable SEMICOLON .
+
+    NEW             reduce using rule 10 (statement -> alter_variable SEMICOLON .)
+    VALUES          reduce using rule 10 (statement -> alter_variable SEMICOLON .)
+    ALTER           reduce using rule 10 (statement -> alter_variable SEMICOLON .)
+    ALTER_B         reduce using rule 10 (statement -> alter_variable SEMICOLON .)
+    SIGNAL          reduce using rule 10 (statement -> alter_variable SEMICOLON .)
+    VIEW_SIGNAL     reduce using rule 10 (statement -> alter_variable SEMICOLON .)
+    IS_TRUE         reduce using rule 10 (statement -> alter_variable SEMICOLON .)
+    CASE            reduce using rule 10 (statement -> alter_variable SEMICOLON .)
+    CALL            reduce using rule 10 (statement -> alter_variable SEMICOLON .)
+    PRINT_VALUES    reduce using rule 10 (statement -> alter_variable SEMICOLON .)
+    RPAREN          reduce using rule 10 (statement -> alter_variable SEMICOLON .)
+
+
+state 37
+
+    (11) statement -> variable_with_alter SEMICOLON .
+
+    NEW             reduce using rule 11 (statement -> variable_with_alter SEMICOLON .)
+    VALUES          reduce using rule 11 (statement -> variable_with_alter SEMICOLON .)
+    ALTER           reduce using rule 11 (statement -> variable_with_alter SEMICOLON .)
+    ALTER_B         reduce using rule 11 (statement -> variable_with_alter SEMICOLON .)
+    SIGNAL          reduce using rule 11 (statement -> variable_with_alter SEMICOLON .)
+    VIEW_SIGNAL     reduce using rule 11 (statement -> variable_with_alter SEMICOLON .)
+    IS_TRUE         reduce using rule 11 (statement -> variable_with_alter SEMICOLON .)
+    CASE            reduce using rule 11 (statement -> variable_with_alter SEMICOLON .)
+    CALL            reduce using rule 11 (statement -> variable_with_alter SEMICOLON .)
+    PRINT_VALUES    reduce using rule 11 (statement -> variable_with_alter SEMICOLON .)
+    RPAREN          reduce using rule 11 (statement -> variable_with_alter SEMICOLON .)
+
+
+state 38
+
+    (12) statement -> alter_b_variable SEMICOLON .
+
+    NEW             reduce using rule 12 (statement -> alter_b_variable SEMICOLON .)
+    VALUES          reduce using rule 12 (statement -> alter_b_variable SEMICOLON .)
+    ALTER           reduce using rule 12 (statement -> alter_b_variable SEMICOLON .)
+    ALTER_B         reduce using rule 12 (statement -> alter_b_variable SEMICOLON .)
+    SIGNAL          reduce using rule 12 (statement -> alter_b_variable SEMICOLON .)
+    VIEW_SIGNAL     reduce using rule 12 (statement -> alter_b_variable SEMICOLON .)
+    IS_TRUE         reduce using rule 12 (statement -> alter_b_variable SEMICOLON .)
+    CASE            reduce using rule 12 (statement -> alter_b_variable SEMICOLON .)
+    CALL            reduce using rule 12 (statement -> alter_b_variable SEMICOLON .)
+    PRINT_VALUES    reduce using rule 12 (statement -> alter_b_variable SEMICOLON .)
+    RPAREN          reduce using rule 12 (statement -> alter_b_variable SEMICOLON .)
+
+
+state 39
+
+    (13) statement -> signal_function SEMICOLON .
+
+    NEW             reduce using rule 13 (statement -> signal_function SEMICOLON .)
+    VALUES          reduce using rule 13 (statement -> signal_function SEMICOLON .)
+    ALTER           reduce using rule 13 (statement -> signal_function SEMICOLON .)
+    ALTER_B         reduce using rule 13 (statement -> signal_function SEMICOLON .)
+    SIGNAL          reduce using rule 13 (statement -> signal_function SEMICOLON .)
+    VIEW_SIGNAL     reduce using rule 13 (statement -> signal_function SEMICOLON .)
+    IS_TRUE         reduce using rule 13 (statement -> signal_function SEMICOLON .)
+    CASE            reduce using rule 13 (statement -> signal_function SEMICOLON .)
+    CALL            reduce using rule 13 (statement -> signal_function SEMICOLON .)
+    PRINT_VALUES    reduce using rule 13 (statement -> signal_function SEMICOLON .)
+    RPAREN          reduce using rule 13 (statement -> signal_function SEMICOLON .)
+
+
+state 40
+
+    (14) statement -> view_signal_function SEMICOLON .
+
+    NEW             reduce using rule 14 (statement -> view_signal_function SEMICOLON .)
+    VALUES          reduce using rule 14 (statement -> view_signal_function SEMICOLON .)
+    ALTER           reduce using rule 14 (statement -> view_signal_function SEMICOLON .)
+    ALTER_B         reduce using rule 14 (statement -> view_signal_function SEMICOLON .)
+    SIGNAL          reduce using rule 14 (statement -> view_signal_function SEMICOLON .)
+    VIEW_SIGNAL     reduce using rule 14 (statement -> view_signal_function SEMICOLON .)
+    IS_TRUE         reduce using rule 14 (statement -> view_signal_function SEMICOLON .)
+    CASE            reduce using rule 14 (statement -> view_signal_function SEMICOLON .)
+    CALL            reduce using rule 14 (statement -> view_signal_function SEMICOLON .)
+    PRINT_VALUES    reduce using rule 14 (statement -> view_signal_function SEMICOLON .)
+    RPAREN          reduce using rule 14 (statement -> view_signal_function SEMICOLON .)
+
+
+state 41
+
+    (15) statement -> is_true_function SEMICOLON .
+
+    NEW             reduce using rule 15 (statement -> is_true_function SEMICOLON .)
+    VALUES          reduce using rule 15 (statement -> is_true_function SEMICOLON .)
+    ALTER           reduce using rule 15 (statement -> is_true_function SEMICOLON .)
+    ALTER_B         reduce using rule 15 (statement -> is_true_function SEMICOLON .)
+    SIGNAL          reduce using rule 15 (statement -> is_true_function SEMICOLON .)
+    VIEW_SIGNAL     reduce using rule 15 (statement -> is_true_function SEMICOLON .)
+    IS_TRUE         reduce using rule 15 (statement -> is_true_function SEMICOLON .)
+    CASE            reduce using rule 15 (statement -> is_true_function SEMICOLON .)
+    CALL            reduce using rule 15 (statement -> is_true_function SEMICOLON .)
+    PRINT_VALUES    reduce using rule 15 (statement -> is_true_function SEMICOLON .)
+    RPAREN          reduce using rule 15 (statement -> is_true_function SEMICOLON .)
+
+
+state 42
+
+    (16) statement -> case_statement SEMICOLON .
+
+    NEW             reduce using rule 16 (statement -> case_statement SEMICOLON .)
+    VALUES          reduce using rule 16 (statement -> case_statement SEMICOLON .)
+    ALTER           reduce using rule 16 (statement -> case_statement SEMICOLON .)
+    ALTER_B         reduce using rule 16 (statement -> case_statement SEMICOLON .)
+    SIGNAL          reduce using rule 16 (statement -> case_statement SEMICOLON .)
+    VIEW_SIGNAL     reduce using rule 16 (statement -> case_statement SEMICOLON .)
+    IS_TRUE         reduce using rule 16 (statement -> case_statement SEMICOLON .)
+    CASE            reduce using rule 16 (statement -> case_statement SEMICOLON .)
+    CALL            reduce using rule 16 (statement -> case_statement SEMICOLON .)
+    PRINT_VALUES    reduce using rule 16 (statement -> case_statement SEMICOLON .)
+    RPAREN          reduce using rule 16 (statement -> case_statement SEMICOLON .)
+
+
+state 43
+
+    (17) statement -> procedure_call SEMICOLON .
+
+    NEW             reduce using rule 17 (statement -> procedure_call SEMICOLON .)
+    VALUES          reduce using rule 17 (statement -> procedure_call SEMICOLON .)
+    ALTER           reduce using rule 17 (statement -> procedure_call SEMICOLON .)
+    ALTER_B         reduce using rule 17 (statement -> procedure_call SEMICOLON .)
+    SIGNAL          reduce using rule 17 (statement -> procedure_call SEMICOLON .)
+    VIEW_SIGNAL     reduce using rule 17 (statement -> procedure_call SEMICOLON .)
+    IS_TRUE         reduce using rule 17 (statement -> procedure_call SEMICOLON .)
+    CASE            reduce using rule 17 (statement -> procedure_call SEMICOLON .)
+    CALL            reduce using rule 17 (statement -> procedure_call SEMICOLON .)
+    PRINT_VALUES    reduce using rule 17 (statement -> procedure_call SEMICOLON .)
+    RPAREN          reduce using rule 17 (statement -> procedure_call SEMICOLON .)
+
+
+state 44
+
+    (18) statement -> print_statement SEMICOLON .
+
+    NEW             reduce using rule 18 (statement -> print_statement SEMICOLON .)
+    VALUES          reduce using rule 18 (statement -> print_statement SEMICOLON .)
+    ALTER           reduce using rule 18 (statement -> print_statement SEMICOLON .)
+    ALTER_B         reduce using rule 18 (statement -> print_statement SEMICOLON .)
+    SIGNAL          reduce using rule 18 (statement -> print_statement SEMICOLON .)
+    VIEW_SIGNAL     reduce using rule 18 (statement -> print_statement SEMICOLON .)
+    IS_TRUE         reduce using rule 18 (statement -> print_statement SEMICOLON .)
+    CASE            reduce using rule 18 (statement -> print_statement SEMICOLON .)
+    CALL            reduce using rule 18 (statement -> print_statement SEMICOLON .)
+    PRINT_VALUES    reduce using rule 18 (statement -> print_statement SEMICOLON .)
+    RPAREN          reduce using rule 18 (statement -> print_statement SEMICOLON .)
+
+
+state 45
+
+    (19) variable_declaration -> NEW ID . COMMA type_value
+
+    COMMA           shift and go to state 56
+
+
+state 46
+
+    (46) variable_update -> VALUES LPAREN . ID COMMA value RPAREN
+    (48) variable_with_alter -> VALUES LPAREN . ID COMMA alter_variable RPAREN
+
+    ID              shift and go to state 57
+
+
+state 47
+
+    (47) alter_variable -> ALTER LPAREN . ID COMMA operator COMMA value RPAREN
+
+    ID              shift and go to state 58
+
+
+state 48
+
+    (49) alter_b_variable -> ALTER_B LPAREN . ID RPAREN
+
+    ID              shift and go to state 59
+
+
+state 49
+
+    (50) signal_function -> SIGNAL LPAREN . position_state COMMA position_state RPAREN
+    (51) position_state -> . value
+    (52) position_state -> . ID
+    (24) value -> . NUMBER
+    (25) value -> . BOOLEAN
+    (26) value -> . STRING
+    (27) value -> . ID
+    (28) value -> . arith_op
+    (29) arith_op -> . math_operation
+    (30) math_operation -> . math_operation operator math_operation
+    (31) math_operation -> . math_operation operator math_value
+    (32) math_operation -> . math_value operator math_operation
+    (33) math_operation -> . math_value operator math_value
+    (35) math_value -> . ID
+    (36) math_value -> . NUMBER
+    (37) math_value -> . math_value_negative
+    (38) math_value -> . math_operation_paren
+    (39) math_value_negative -> . SUB ID
+    (40) math_value_negative -> . SUB NUMBER
+    (34) math_operation_paren -> . LPAREN math_operation RPAREN
+
+    ID              shift and go to state 63
+    NUMBER          shift and go to state 64
+    BOOLEAN         shift and go to state 65
+    STRING          shift and go to state 66
+    SUB             shift and go to state 72
+    LPAREN          shift and go to state 60
+
+    position_state                 shift and go to state 61
+    value                          shift and go to state 62
+    arith_op                       shift and go to state 67
+    math_operation                 shift and go to state 68
+    math_value                     shift and go to state 69
+    math_value_negative            shift and go to state 70
+    math_operation_paren           shift and go to state 71
+
+state 50
+
+    (53) view_signal_function -> VIEW_SIGNAL LPAREN . position_state RPAREN
+    (51) position_state -> . value
+    (52) position_state -> . ID
+    (24) value -> . NUMBER
+    (25) value -> . BOOLEAN
+    (26) value -> . STRING
+    (27) value -> . ID
+    (28) value -> . arith_op
+    (29) arith_op -> . math_operation
+    (30) math_operation -> . math_operation operator math_operation
+    (31) math_operation -> . math_operation operator math_value
+    (32) math_operation -> . math_value operator math_operation
+    (33) math_operation -> . math_value operator math_value
+    (35) math_value -> . ID
+    (36) math_value -> . NUMBER
+    (37) math_value -> . math_value_negative
+    (38) math_value -> . math_operation_paren
+    (39) math_value_negative -> . SUB ID
+    (40) math_value_negative -> . SUB NUMBER
+    (34) math_operation_paren -> . LPAREN math_operation RPAREN
+
+    ID              shift and go to state 63
+    NUMBER          shift and go to state 64
+    BOOLEAN         shift and go to state 65
+    STRING          shift and go to state 66
+    SUB             shift and go to state 72
+    LPAREN          shift and go to state 60
+
+    position_state                 shift and go to state 73
+    value                          shift and go to state 62
+    arith_op                       shift and go to state 67
+    math_operation                 shift and go to state 68
+    math_value                     shift and go to state 69
+    math_value_negative            shift and go to state 70
+    math_operation_paren           shift and go to state 71
+
+state 51
+
+    (54) is_true_function -> IS_TRUE LPAREN . ID RPAREN
+
+    ID              shift and go to state 74
+
+
+state 52
+
+    (55) case_statement -> CASE ID . case_options
+    (56) case_statement -> CASE ID . case_options else_option
+    (57) case_options -> . when_statement
+    (58) case_options -> . when_statement case_options
+    (59) when_statement -> . WHEN value THEN LPAREN statements RPAREN
+
+    WHEN            shift and go to state 77
+
+    case_options                   shift and go to state 75
+    when_statement                 shift and go to state 76
+
+state 53
+
+    (62) procedure_call -> CALL LPAREN . ID RPAREN
+
+    ID              shift and go to state 78
+
+
+state 54
+
+    (63) print_statement -> PRINT_VALUES LPAREN . print_value_list RPAREN
+    (64) print_value_list -> . print_value
+    (65) print_value_list -> . print_value_list COMMA print_value
+    (66) print_value -> . STRING
+    (67) print_value -> . ID
+    (68) print_value -> . view_signal_function
+    (53) view_signal_function -> . VIEW_SIGNAL LPAREN position_state RPAREN
+
+    STRING          shift and go to state 81
+    ID              shift and go to state 82
+    VIEW_SIGNAL     shift and go to state 27
+
+    print_value_list               shift and go to state 79
+    print_value                    shift and go to state 80
+    view_signal_function           shift and go to state 83
+
+state 55
+
+    (5) procedure -> PROC ID LPAREN statements RPAREN SEMICOLON .
+
+    PROC            reduce using rule 5 (procedure -> PROC ID LPAREN statements RPAREN SEMICOLON .)
+    $end            reduce using rule 5 (procedure -> PROC ID LPAREN statements RPAREN SEMICOLON .)
+
+
+state 56
+
+    (19) variable_declaration -> NEW ID COMMA . type_value
+    (20) type_value -> . LPAREN type COMMA value RPAREN
+
+    LPAREN          shift and go to state 85
+
+    type_value                     shift and go to state 84
+
+state 57
+
+    (46) variable_update -> VALUES LPAREN ID . COMMA value RPAREN
+    (48) variable_with_alter -> VALUES LPAREN ID . COMMA alter_variable RPAREN
+
+    COMMA           shift and go to state 86
+
+
+state 58
+
+    (47) alter_variable -> ALTER LPAREN ID . COMMA operator COMMA value RPAREN
+
+    COMMA           shift and go to state 87
+
+
+state 59
+
+    (49) alter_b_variable -> ALTER_B LPAREN ID . RPAREN
+
+    RPAREN          shift and go to state 88
+
+
+state 60
+
+    (34) math_operation_paren -> LPAREN . math_operation RPAREN
+    (30) math_operation -> . math_operation operator math_operation
+    (31) math_operation -> . math_operation operator math_value
+    (32) math_operation -> . math_value operator math_operation
+    (33) math_operation -> . math_value operator math_value
+    (35) math_value -> . ID
+    (36) math_value -> . NUMBER
+    (37) math_value -> . math_value_negative
+    (38) math_value -> . math_operation_paren
+    (39) math_value_negative -> . SUB ID
+    (40) math_value_negative -> . SUB NUMBER
+    (34) math_operation_paren -> . LPAREN math_operation RPAREN
+
+    ID              shift and go to state 90
+    NUMBER          shift and go to state 91
+    SUB             shift and go to state 72
+    LPAREN          shift and go to state 60
+
+    math_operation                 shift and go to state 89
+    math_value                     shift and go to state 69
+    math_value_negative            shift and go to state 70
+    math_operation_paren           shift and go to state 71
+
+state 61
+
+    (50) signal_function -> SIGNAL LPAREN position_state . COMMA position_state RPAREN
+
+    COMMA           shift and go to state 92
+
+
+state 62
+
+    (51) position_state -> value .
+
+    COMMA           reduce using rule 51 (position_state -> value .)
+    RPAREN          reduce using rule 51 (position_state -> value .)
+
+
+state 63
+
+    (52) position_state -> ID .
+    (27) value -> ID .
+    (35) math_value -> ID .
+
+  ! reduce/reduce conflict for COMMA resolved using rule 27 (value -> ID .)
+  ! reduce/reduce conflict for RPAREN resolved using rule 27 (value -> ID .)
+    COMMA           reduce using rule 27 (value -> ID .)
+    RPAREN          reduce using rule 27 (value -> ID .)
+    ADD             reduce using rule 35 (math_value -> ID .)
+    SUB             reduce using rule 35 (math_value -> ID .)
+    MUL             reduce using rule 35 (math_value -> ID .)
+    DIV             reduce using rule 35 (math_value -> ID .)
+    REL_OP          reduce using rule 35 (math_value -> ID .)
+
+  ! COMMA           [ reduce using rule 52 (position_state -> ID .) ]
+  ! RPAREN          [ reduce using rule 52 (position_state -> ID .) ]
+
+
+state 64
+
+    (24) value -> NUMBER .
+    (36) math_value -> NUMBER .
+
+    COMMA           reduce using rule 24 (value -> NUMBER .)
+    RPAREN          reduce using rule 24 (value -> NUMBER .)
+    THEN            reduce using rule 24 (value -> NUMBER .)
+    ADD             reduce using rule 36 (math_value -> NUMBER .)
+    SUB             reduce using rule 36 (math_value -> NUMBER .)
+    MUL             reduce using rule 36 (math_value -> NUMBER .)
+    DIV             reduce using rule 36 (math_value -> NUMBER .)
+    REL_OP          reduce using rule 36 (math_value -> NUMBER .)
+
+
+state 65
+
+    (25) value -> BOOLEAN .
+
+    COMMA           reduce using rule 25 (value -> BOOLEAN .)
+    RPAREN          reduce using rule 25 (value -> BOOLEAN .)
+    THEN            reduce using rule 25 (value -> BOOLEAN .)
+
+
+state 66
+
+    (26) value -> STRING .
+
+    COMMA           reduce using rule 26 (value -> STRING .)
+    RPAREN          reduce using rule 26 (value -> STRING .)
+    THEN            reduce using rule 26 (value -> STRING .)
+
+
+state 67
+
+    (28) value -> arith_op .
+
+    COMMA           reduce using rule 28 (value -> arith_op .)
+    RPAREN          reduce using rule 28 (value -> arith_op .)
+    THEN            reduce using rule 28 (value -> arith_op .)
+
+
+state 68
+
+    (29) arith_op -> math_operation .
+    (30) math_operation -> math_operation . operator math_operation
+    (31) math_operation -> math_operation . operator math_value
+    (41) operator -> . ADD
+    (42) operator -> . SUB
+    (43) operator -> . MUL
+    (44) operator -> . DIV
+    (45) operator -> . REL_OP
+
+    COMMA           reduce using rule 29 (arith_op -> math_operation .)
+    RPAREN          reduce using rule 29 (arith_op -> math_operation .)
+    THEN            reduce using rule 29 (arith_op -> math_operation .)
+    ADD             shift and go to state 94
+    SUB             shift and go to state 95
+    MUL             shift and go to state 96
+    DIV             shift and go to state 97
+    REL_OP          shift and go to state 98
+
+    operator                       shift and go to state 93
+
+state 69
+
+    (32) math_operation -> math_value . operator math_operation
+    (33) math_operation -> math_value . operator math_value
+    (41) operator -> . ADD
+    (42) operator -> . SUB
+    (43) operator -> . MUL
+    (44) operator -> . DIV
+    (45) operator -> . REL_OP
+
+    ADD             shift and go to state 94
+    SUB             shift and go to state 95
+    MUL             shift and go to state 96
+    DIV             shift and go to state 97
+    REL_OP          shift and go to state 98
+
+    operator                       shift and go to state 99
+
+state 70
+
+    (37) math_value -> math_value_negative .
+
+    ADD             reduce using rule 37 (math_value -> math_value_negative .)
+    SUB             reduce using rule 37 (math_value -> math_value_negative .)
+    MUL             reduce using rule 37 (math_value -> math_value_negative .)
+    DIV             reduce using rule 37 (math_value -> math_value_negative .)
+    REL_OP          reduce using rule 37 (math_value -> math_value_negative .)
+    COMMA           reduce using rule 37 (math_value -> math_value_negative .)
+    RPAREN          reduce using rule 37 (math_value -> math_value_negative .)
+    THEN            reduce using rule 37 (math_value -> math_value_negative .)
+
+
+state 71
+
+    (38) math_value -> math_operation_paren .
+
+    ADD             reduce using rule 38 (math_value -> math_operation_paren .)
+    SUB             reduce using rule 38 (math_value -> math_operation_paren .)
+    MUL             reduce using rule 38 (math_value -> math_operation_paren .)
+    DIV             reduce using rule 38 (math_value -> math_operation_paren .)
+    REL_OP          reduce using rule 38 (math_value -> math_operation_paren .)
+    COMMA           reduce using rule 38 (math_value -> math_operation_paren .)
+    RPAREN          reduce using rule 38 (math_value -> math_operation_paren .)
+    THEN            reduce using rule 38 (math_value -> math_operation_paren .)
+
+
+state 72
+
+    (39) math_value_negative -> SUB . ID
+    (40) math_value_negative -> SUB . NUMBER
+
+    ID              shift and go to state 100
+    NUMBER          shift and go to state 101
+
+
+state 73
+
+    (53) view_signal_function -> VIEW_SIGNAL LPAREN position_state . RPAREN
+
+    RPAREN          shift and go to state 102
+
+
+state 74
+
+    (54) is_true_function -> IS_TRUE LPAREN ID . RPAREN
+
+    RPAREN          shift and go to state 103
+
+
+state 75
+
+    (55) case_statement -> CASE ID case_options .
+    (56) case_statement -> CASE ID case_options . else_option
+    (60) else_option -> . ELSE LPAREN statements RPAREN
+    (61) else_option -> . empty
+    (69) empty -> .
+
+  ! reduce/reduce conflict for SEMICOLON resolved using rule 55 (case_statement -> CASE ID case_options .)
+    SEMICOLON       reduce using rule 55 (case_statement -> CASE ID case_options .)
+    ELSE            shift and go to state 105
+
+  ! SEMICOLON       [ reduce using rule 69 (empty -> .) ]
+
+    else_option                    shift and go to state 104
+    empty                          shift and go to state 106
+
+state 76
+
+    (57) case_options -> when_statement .
+    (58) case_options -> when_statement . case_options
+    (57) case_options -> . when_statement
+    (58) case_options -> . when_statement case_options
+    (59) when_statement -> . WHEN value THEN LPAREN statements RPAREN
+
+    ELSE            reduce using rule 57 (case_options -> when_statement .)
+    SEMICOLON       reduce using rule 57 (case_options -> when_statement .)
+    WHEN            shift and go to state 77
+
+    when_statement                 shift and go to state 76
+    case_options                   shift and go to state 107
+
+state 77
+
+    (59) when_statement -> WHEN . value THEN LPAREN statements RPAREN
+    (24) value -> . NUMBER
+    (25) value -> . BOOLEAN
+    (26) value -> . STRING
+    (27) value -> . ID
+    (28) value -> . arith_op
+    (29) arith_op -> . math_operation
+    (30) math_operation -> . math_operation operator math_operation
+    (31) math_operation -> . math_operation operator math_value
+    (32) math_operation -> . math_value operator math_operation
+    (33) math_operation -> . math_value operator math_value
+    (35) math_value -> . ID
+    (36) math_value -> . NUMBER
+    (37) math_value -> . math_value_negative
+    (38) math_value -> . math_operation_paren
+    (39) math_value_negative -> . SUB ID
+    (40) math_value_negative -> . SUB NUMBER
+    (34) math_operation_paren -> . LPAREN math_operation RPAREN
+
+    NUMBER          shift and go to state 64
+    BOOLEAN         shift and go to state 65
+    STRING          shift and go to state 66
+    ID              shift and go to state 109
+    SUB             shift and go to state 72
+    LPAREN          shift and go to state 60
+
+    value                          shift and go to state 108
+    arith_op                       shift and go to state 67
+    math_operation                 shift and go to state 68
+    math_value                     shift and go to state 69
+    math_value_negative            shift and go to state 70
+    math_operation_paren           shift and go to state 71
+
+state 78
+
+    (62) procedure_call -> CALL LPAREN ID . RPAREN
+
+    RPAREN          shift and go to state 110
+
+
+state 79
+
+    (63) print_statement -> PRINT_VALUES LPAREN print_value_list . RPAREN
+    (65) print_value_list -> print_value_list . COMMA print_value
+
+    RPAREN          shift and go to state 111
+    COMMA           shift and go to state 112
+
+
+state 80
+
+    (64) print_value_list -> print_value .
+
+    RPAREN          reduce using rule 64 (print_value_list -> print_value .)
+    COMMA           reduce using rule 64 (print_value_list -> print_value .)
+
+
+state 81
+
+    (66) print_value -> STRING .
+
+    RPAREN          reduce using rule 66 (print_value -> STRING .)
+    COMMA           reduce using rule 66 (print_value -> STRING .)
+
+
+state 82
+
+    (67) print_value -> ID .
+
+    RPAREN          reduce using rule 67 (print_value -> ID .)
+    COMMA           reduce using rule 67 (print_value -> ID .)
+
+
+state 83
+
+    (68) print_value -> view_signal_function .
+
+    RPAREN          reduce using rule 68 (print_value -> view_signal_function .)
+    COMMA           reduce using rule 68 (print_value -> view_signal_function .)
+
+
+state 84
+
+    (19) variable_declaration -> NEW ID COMMA type_value .
+
+    SEMICOLON       reduce using rule 19 (variable_declaration -> NEW ID COMMA type_value .)
+
+
+state 85
+
+    (20) type_value -> LPAREN . type COMMA value RPAREN
+    (21) type -> . NUM
+    (22) type -> . BOOL
+    (23) type -> . STRING
+
+    NUM             shift and go to state 114
+    BOOL            shift and go to state 115
+    STRING          shift and go to state 116
+
+    type                           shift and go to state 113
+
+state 86
+
+    (46) variable_update -> VALUES LPAREN ID COMMA . value RPAREN
+    (48) variable_with_alter -> VALUES LPAREN ID COMMA . alter_variable RPAREN
+    (24) value -> . NUMBER
+    (25) value -> . BOOLEAN
+    (26) value -> . STRING
+    (27) value -> . ID
+    (28) value -> . arith_op
+    (47) alter_variable -> . ALTER LPAREN ID COMMA operator COMMA value RPAREN
+    (29) arith_op -> . math_operation
+    (30) math_operation -> . math_operation operator math_operation
+    (31) math_operation -> . math_operation operator math_value
+    (32) math_operation -> . math_value operator math_operation
+    (33) math_operation -> . math_value operator math_value
+    (35) math_value -> . ID
+    (36) math_value -> . NUMBER
+    (37) math_value -> . math_value_negative
+    (38) math_value -> . math_operation_paren
+    (39) math_value_negative -> . SUB ID
+    (40) math_value_negative -> . SUB NUMBER
+    (34) math_operation_paren -> . LPAREN math_operation RPAREN
+
+    NUMBER          shift and go to state 64
+    BOOLEAN         shift and go to state 65
+    STRING          shift and go to state 66
+    ID              shift and go to state 109
+    ALTER           shift and go to state 24
+    SUB             shift and go to state 72
+    LPAREN          shift and go to state 60
+
+    value                          shift and go to state 117
+    alter_variable                 shift and go to state 118
+    arith_op                       shift and go to state 67
+    math_operation                 shift and go to state 68
+    math_value                     shift and go to state 69
+    math_value_negative            shift and go to state 70
+    math_operation_paren           shift and go to state 71
+
+state 87
+
+    (47) alter_variable -> ALTER LPAREN ID COMMA . operator COMMA value RPAREN
+    (41) operator -> . ADD
+    (42) operator -> . SUB
+    (43) operator -> . MUL
+    (44) operator -> . DIV
+    (45) operator -> . REL_OP
+
+    ADD             shift and go to state 94
+    SUB             shift and go to state 95
+    MUL             shift and go to state 96
+    DIV             shift and go to state 97
+    REL_OP          shift and go to state 98
+
+    operator                       shift and go to state 119
+
+state 88
+
+    (49) alter_b_variable -> ALTER_B LPAREN ID RPAREN .
+
+    SEMICOLON       reduce using rule 49 (alter_b_variable -> ALTER_B LPAREN ID RPAREN .)
+
+
+state 89
+
+    (34) math_operation_paren -> LPAREN math_operation . RPAREN
+    (30) math_operation -> math_operation . operator math_operation
+    (31) math_operation -> math_operation . operator math_value
+    (41) operator -> . ADD
+    (42) operator -> . SUB
+    (43) operator -> . MUL
+    (44) operator -> . DIV
+    (45) operator -> . REL_OP
+
+    RPAREN          shift and go to state 120
+    ADD             shift and go to state 94
+    SUB             shift and go to state 95
+    MUL             shift and go to state 96
+    DIV             shift and go to state 97
+    REL_OP          shift and go to state 98
+
+    operator                       shift and go to state 93
+
+state 90
+
+    (35) math_value -> ID .
+
+    ADD             reduce using rule 35 (math_value -> ID .)
+    SUB             reduce using rule 35 (math_value -> ID .)
+    MUL             reduce using rule 35 (math_value -> ID .)
+    DIV             reduce using rule 35 (math_value -> ID .)
+    REL_OP          reduce using rule 35 (math_value -> ID .)
+    COMMA           reduce using rule 35 (math_value -> ID .)
+    RPAREN          reduce using rule 35 (math_value -> ID .)
+    THEN            reduce using rule 35 (math_value -> ID .)
+
+
+state 91
+
+    (36) math_value -> NUMBER .
+
+    ADD             reduce using rule 36 (math_value -> NUMBER .)
+    SUB             reduce using rule 36 (math_value -> NUMBER .)
+    MUL             reduce using rule 36 (math_value -> NUMBER .)
+    DIV             reduce using rule 36 (math_value -> NUMBER .)
+    REL_OP          reduce using rule 36 (math_value -> NUMBER .)
+    COMMA           reduce using rule 36 (math_value -> NUMBER .)
+    RPAREN          reduce using rule 36 (math_value -> NUMBER .)
+    THEN            reduce using rule 36 (math_value -> NUMBER .)
+
+
+state 92
+
+    (50) signal_function -> SIGNAL LPAREN position_state COMMA . position_state RPAREN
+    (51) position_state -> . value
+    (52) position_state -> . ID
+    (24) value -> . NUMBER
+    (25) value -> . BOOLEAN
+    (26) value -> . STRING
+    (27) value -> . ID
+    (28) value -> . arith_op
+    (29) arith_op -> . math_operation
+    (30) math_operation -> . math_operation operator math_operation
+    (31) math_operation -> . math_operation operator math_value
+    (32) math_operation -> . math_value operator math_operation
+    (33) math_operation -> . math_value operator math_value
+    (35) math_value -> . ID
+    (36) math_value -> . NUMBER
+    (37) math_value -> . math_value_negative
+    (38) math_value -> . math_operation_paren
+    (39) math_value_negative -> . SUB ID
+    (40) math_value_negative -> . SUB NUMBER
+    (34) math_operation_paren -> . LPAREN math_operation RPAREN
+
+    ID              shift and go to state 63
+    NUMBER          shift and go to state 64
+    BOOLEAN         shift and go to state 65
+    STRING          shift and go to state 66
+    SUB             shift and go to state 72
+    LPAREN          shift and go to state 60
+
+    position_state                 shift and go to state 121
+    value                          shift and go to state 62
+    arith_op                       shift and go to state 67
+    math_operation                 shift and go to state 68
+    math_value                     shift and go to state 69
+    math_value_negative            shift and go to state 70
+    math_operation_paren           shift and go to state 71
+
+state 93
+
+    (30) math_operation -> math_operation operator . math_operation
+    (31) math_operation -> math_operation operator . math_value
+    (30) math_operation -> . math_operation operator math_operation
+    (31) math_operation -> . math_operation operator math_value
+    (32) math_operation -> . math_value operator math_operation
+    (33) math_operation -> . math_value operator math_value
+    (35) math_value -> . ID
+    (36) math_value -> . NUMBER
+    (37) math_value -> . math_value_negative
+    (38) math_value -> . math_operation_paren
+    (39) math_value_negative -> . SUB ID
+    (40) math_value_negative -> . SUB NUMBER
+    (34) math_operation_paren -> . LPAREN math_operation RPAREN
+
+    ID              shift and go to state 90
+    NUMBER          shift and go to state 91
+    SUB             shift and go to state 72
+    LPAREN          shift and go to state 60
+
+    math_operation                 shift and go to state 122
+    math_value                     shift and go to state 123
+    math_value_negative            shift and go to state 70
+    math_operation_paren           shift and go to state 71
+
+state 94
+
+    (41) operator -> ADD .
+
+    ID              reduce using rule 41 (operator -> ADD .)
+    NUMBER          reduce using rule 41 (operator -> ADD .)
+    SUB             reduce using rule 41 (operator -> ADD .)
+    LPAREN          reduce using rule 41 (operator -> ADD .)
+    COMMA           reduce using rule 41 (operator -> ADD .)
+
+
+state 95
+
+    (42) operator -> SUB .
+
+    ID              reduce using rule 42 (operator -> SUB .)
+    NUMBER          reduce using rule 42 (operator -> SUB .)
+    SUB             reduce using rule 42 (operator -> SUB .)
+    LPAREN          reduce using rule 42 (operator -> SUB .)
+    COMMA           reduce using rule 42 (operator -> SUB .)
+
+
+state 96
+
+    (43) operator -> MUL .
+
+    ID              reduce using rule 43 (operator -> MUL .)
+    NUMBER          reduce using rule 43 (operator -> MUL .)
+    SUB             reduce using rule 43 (operator -> MUL .)
+    LPAREN          reduce using rule 43 (operator -> MUL .)
+    COMMA           reduce using rule 43 (operator -> MUL .)
+
+
+state 97
+
+    (44) operator -> DIV .
+
+    ID              reduce using rule 44 (operator -> DIV .)
+    NUMBER          reduce using rule 44 (operator -> DIV .)
+    SUB             reduce using rule 44 (operator -> DIV .)
+    LPAREN          reduce using rule 44 (operator -> DIV .)
+    COMMA           reduce using rule 44 (operator -> DIV .)
+
+
+state 98
+
+    (45) operator -> REL_OP .
+
+    ID              reduce using rule 45 (operator -> REL_OP .)
+    NUMBER          reduce using rule 45 (operator -> REL_OP .)
+    SUB             reduce using rule 45 (operator -> REL_OP .)
+    LPAREN          reduce using rule 45 (operator -> REL_OP .)
+    COMMA           reduce using rule 45 (operator -> REL_OP .)
+
+
+state 99
+
+    (32) math_operation -> math_value operator . math_operation
+    (33) math_operation -> math_value operator . math_value
+    (30) math_operation -> . math_operation operator math_operation
+    (31) math_operation -> . math_operation operator math_value
+    (32) math_operation -> . math_value operator math_operation
+    (33) math_operation -> . math_value operator math_value
+    (35) math_value -> . ID
+    (36) math_value -> . NUMBER
+    (37) math_value -> . math_value_negative
+    (38) math_value -> . math_operation_paren
+    (39) math_value_negative -> . SUB ID
+    (40) math_value_negative -> . SUB NUMBER
+    (34) math_operation_paren -> . LPAREN math_operation RPAREN
+
+    ID              shift and go to state 90
+    NUMBER          shift and go to state 91
+    SUB             shift and go to state 72
+    LPAREN          shift and go to state 60
+
+    math_value                     shift and go to state 124
+    math_operation                 shift and go to state 125
+    math_value_negative            shift and go to state 70
+    math_operation_paren           shift and go to state 71
+
+state 100
+
+    (39) math_value_negative -> SUB ID .
+
+    ADD             reduce using rule 39 (math_value_negative -> SUB ID .)
+    SUB             reduce using rule 39 (math_value_negative -> SUB ID .)
+    MUL             reduce using rule 39 (math_value_negative -> SUB ID .)
+    DIV             reduce using rule 39 (math_value_negative -> SUB ID .)
+    REL_OP          reduce using rule 39 (math_value_negative -> SUB ID .)
+    COMMA           reduce using rule 39 (math_value_negative -> SUB ID .)
+    RPAREN          reduce using rule 39 (math_value_negative -> SUB ID .)
+    THEN            reduce using rule 39 (math_value_negative -> SUB ID .)
+
+
+state 101
+
+    (40) math_value_negative -> SUB NUMBER .
+
+    ADD             reduce using rule 40 (math_value_negative -> SUB NUMBER .)
+    SUB             reduce using rule 40 (math_value_negative -> SUB NUMBER .)
+    MUL             reduce using rule 40 (math_value_negative -> SUB NUMBER .)
+    DIV             reduce using rule 40 (math_value_negative -> SUB NUMBER .)
+    REL_OP          reduce using rule 40 (math_value_negative -> SUB NUMBER .)
+    COMMA           reduce using rule 40 (math_value_negative -> SUB NUMBER .)
+    RPAREN          reduce using rule 40 (math_value_negative -> SUB NUMBER .)
+    THEN            reduce using rule 40 (math_value_negative -> SUB NUMBER .)
+
+
+state 102
+
+    (53) view_signal_function -> VIEW_SIGNAL LPAREN position_state RPAREN .
+
+    SEMICOLON       reduce using rule 53 (view_signal_function -> VIEW_SIGNAL LPAREN position_state RPAREN .)
+    RPAREN          reduce using rule 53 (view_signal_function -> VIEW_SIGNAL LPAREN position_state RPAREN .)
+    COMMA           reduce using rule 53 (view_signal_function -> VIEW_SIGNAL LPAREN position_state RPAREN .)
+
+
+state 103
+
+    (54) is_true_function -> IS_TRUE LPAREN ID RPAREN .
+
+    SEMICOLON       reduce using rule 54 (is_true_function -> IS_TRUE LPAREN ID RPAREN .)
+
+
+state 104
+
+    (56) case_statement -> CASE ID case_options else_option .
+
+    SEMICOLON       reduce using rule 56 (case_statement -> CASE ID case_options else_option .)
+
+
+state 105
+
+    (60) else_option -> ELSE . LPAREN statements RPAREN
+
+    LPAREN          shift and go to state 126
+
+
+state 106
+
+    (61) else_option -> empty .
+
+    SEMICOLON       reduce using rule 61 (else_option -> empty .)
+
+
+state 107
+
+    (58) case_options -> when_statement case_options .
+
+    ELSE            reduce using rule 58 (case_options -> when_statement case_options .)
+    SEMICOLON       reduce using rule 58 (case_options -> when_statement case_options .)
+
+
+state 108
+
+    (59) when_statement -> WHEN value . THEN LPAREN statements RPAREN
+
+    THEN            shift and go to state 127
+
+
+state 109
+
+    (27) value -> ID .
+    (35) math_value -> ID .
+
+    THEN            reduce using rule 27 (value -> ID .)
+    RPAREN          reduce using rule 27 (value -> ID .)
+    ADD             reduce using rule 35 (math_value -> ID .)
+    SUB             reduce using rule 35 (math_value -> ID .)
+    MUL             reduce using rule 35 (math_value -> ID .)
+    DIV             reduce using rule 35 (math_value -> ID .)
+    REL_OP          reduce using rule 35 (math_value -> ID .)
+
+
+state 110
+
+    (62) procedure_call -> CALL LPAREN ID RPAREN .
+
+    SEMICOLON       reduce using rule 62 (procedure_call -> CALL LPAREN ID RPAREN .)
+
+
+state 111
+
+    (63) print_statement -> PRINT_VALUES LPAREN print_value_list RPAREN .
+
+    SEMICOLON       reduce using rule 63 (print_statement -> PRINT_VALUES LPAREN print_value_list RPAREN .)
+
+
+state 112
+
+    (65) print_value_list -> print_value_list COMMA . print_value
+    (66) print_value -> . STRING
+    (67) print_value -> . ID
+    (68) print_value -> . view_signal_function
+    (53) view_signal_function -> . VIEW_SIGNAL LPAREN position_state RPAREN
+
+    STRING          shift and go to state 81
+    ID              shift and go to state 82
+    VIEW_SIGNAL     shift and go to state 27
+
+    print_value                    shift and go to state 128
+    view_signal_function           shift and go to state 83
+
+state 113
+
+    (20) type_value -> LPAREN type . COMMA value RPAREN
+
+    COMMA           shift and go to state 129
+
+
+state 114
+
+    (21) type -> NUM .
+
+    COMMA           reduce using rule 21 (type -> NUM .)
+
+
+state 115
+
+    (22) type -> BOOL .
+
+    COMMA           reduce using rule 22 (type -> BOOL .)
+
+
+state 116
+
+    (23) type -> STRING .
+
+    COMMA           reduce using rule 23 (type -> STRING .)
+
+
+state 117
+
+    (46) variable_update -> VALUES LPAREN ID COMMA value . RPAREN
+
+    RPAREN          shift and go to state 130
+
+
+state 118
+
+    (48) variable_with_alter -> VALUES LPAREN ID COMMA alter_variable . RPAREN
+
+    RPAREN          shift and go to state 131
+
+
+state 119
+
+    (47) alter_variable -> ALTER LPAREN ID COMMA operator . COMMA value RPAREN
+
+    COMMA           shift and go to state 132
+
+
+state 120
+
+    (34) math_operation_paren -> LPAREN math_operation RPAREN .
+
+    ADD             reduce using rule 34 (math_operation_paren -> LPAREN math_operation RPAREN .)
+    SUB             reduce using rule 34 (math_operation_paren -> LPAREN math_operation RPAREN .)
+    MUL             reduce using rule 34 (math_operation_paren -> LPAREN math_operation RPAREN .)
+    DIV             reduce using rule 34 (math_operation_paren -> LPAREN math_operation RPAREN .)
+    REL_OP          reduce using rule 34 (math_operation_paren -> LPAREN math_operation RPAREN .)
+    COMMA           reduce using rule 34 (math_operation_paren -> LPAREN math_operation RPAREN .)
+    RPAREN          reduce using rule 34 (math_operation_paren -> LPAREN math_operation RPAREN .)
+    THEN            reduce using rule 34 (math_operation_paren -> LPAREN math_operation RPAREN .)
+
+
+state 121
+
+    (50) signal_function -> SIGNAL LPAREN position_state COMMA position_state . RPAREN
+
+    RPAREN          shift and go to state 133
+
+
+state 122
+
+    (30) math_operation -> math_operation operator math_operation .
+    (30) math_operation -> math_operation . operator math_operation
+    (31) math_operation -> math_operation . operator math_value
+    (41) operator -> . ADD
+    (42) operator -> . SUB
+    (43) operator -> . MUL
+    (44) operator -> . DIV
+    (45) operator -> . REL_OP
+
+  ! shift/reduce conflict for ADD resolved as shift
+  ! shift/reduce conflict for SUB resolved as shift
+  ! shift/reduce conflict for MUL resolved as shift
+  ! shift/reduce conflict for DIV resolved as shift
+  ! shift/reduce conflict for REL_OP resolved as shift
+    COMMA           reduce using rule 30 (math_operation -> math_operation operator math_operation .)
+    RPAREN          reduce using rule 30 (math_operation -> math_operation operator math_operation .)
+    THEN            reduce using rule 30 (math_operation -> math_operation operator math_operation .)
+    ADD             shift and go to state 94
+    SUB             shift and go to state 95
+    MUL             shift and go to state 96
+    DIV             shift and go to state 97
+    REL_OP          shift and go to state 98
+
+  ! ADD             [ reduce using rule 30 (math_operation -> math_operation operator math_operation .) ]
+  ! SUB             [ reduce using rule 30 (math_operation -> math_operation operator math_operation .) ]
+  ! MUL             [ reduce using rule 30 (math_operation -> math_operation operator math_operation .) ]
+  ! DIV             [ reduce using rule 30 (math_operation -> math_operation operator math_operation .) ]
+  ! REL_OP          [ reduce using rule 30 (math_operation -> math_operation operator math_operation .) ]
+
+    operator                       shift and go to state 93
+
+state 123
+
+    (31) math_operation -> math_operation operator math_value .
+    (32) math_operation -> math_value . operator math_operation
+    (33) math_operation -> math_value . operator math_value
+    (41) operator -> . ADD
+    (42) operator -> . SUB
+    (43) operator -> . MUL
+    (44) operator -> . DIV
+    (45) operator -> . REL_OP
+
+  ! shift/reduce conflict for ADD resolved as shift
+  ! shift/reduce conflict for SUB resolved as shift
+  ! shift/reduce conflict for MUL resolved as shift
+  ! shift/reduce conflict for DIV resolved as shift
+  ! shift/reduce conflict for REL_OP resolved as shift
+    COMMA           reduce using rule 31 (math_operation -> math_operation operator math_value .)
+    RPAREN          reduce using rule 31 (math_operation -> math_operation operator math_value .)
+    THEN            reduce using rule 31 (math_operation -> math_operation operator math_value .)
+    ADD             shift and go to state 94
+    SUB             shift and go to state 95
+    MUL             shift and go to state 96
+    DIV             shift and go to state 97
+    REL_OP          shift and go to state 98
+
+  ! ADD             [ reduce using rule 31 (math_operation -> math_operation operator math_value .) ]
+  ! SUB             [ reduce using rule 31 (math_operation -> math_operation operator math_value .) ]
+  ! MUL             [ reduce using rule 31 (math_operation -> math_operation operator math_value .) ]
+  ! DIV             [ reduce using rule 31 (math_operation -> math_operation operator math_value .) ]
+  ! REL_OP          [ reduce using rule 31 (math_operation -> math_operation operator math_value .) ]
+
+    operator                       shift and go to state 99
+
+state 124
+
+    (33) math_operation -> math_value operator math_value .
+    (32) math_operation -> math_value . operator math_operation
+    (33) math_operation -> math_value . operator math_value
+    (41) operator -> . ADD
+    (42) operator -> . SUB
+    (43) operator -> . MUL
+    (44) operator -> . DIV
+    (45) operator -> . REL_OP
+
+  ! shift/reduce conflict for ADD resolved as shift
+  ! shift/reduce conflict for SUB resolved as shift
+  ! shift/reduce conflict for MUL resolved as shift
+  ! shift/reduce conflict for DIV resolved as shift
+  ! shift/reduce conflict for REL_OP resolved as shift
+    COMMA           reduce using rule 33 (math_operation -> math_value operator math_value .)
+    RPAREN          reduce using rule 33 (math_operation -> math_value operator math_value .)
+    THEN            reduce using rule 33 (math_operation -> math_value operator math_value .)
+    ADD             shift and go to state 94
+    SUB             shift and go to state 95
+    MUL             shift and go to state 96
+    DIV             shift and go to state 97
+    REL_OP          shift and go to state 98
+
+  ! ADD             [ reduce using rule 33 (math_operation -> math_value operator math_value .) ]
+  ! SUB             [ reduce using rule 33 (math_operation -> math_value operator math_value .) ]
+  ! MUL             [ reduce using rule 33 (math_operation -> math_value operator math_value .) ]
+  ! DIV             [ reduce using rule 33 (math_operation -> math_value operator math_value .) ]
+  ! REL_OP          [ reduce using rule 33 (math_operation -> math_value operator math_value .) ]
+
+    operator                       shift and go to state 99
+
+state 125
+
+    (32) math_operation -> math_value operator math_operation .
+    (30) math_operation -> math_operation . operator math_operation
+    (31) math_operation -> math_operation . operator math_value
+    (41) operator -> . ADD
+    (42) operator -> . SUB
+    (43) operator -> . MUL
+    (44) operator -> . DIV
+    (45) operator -> . REL_OP
+
+  ! shift/reduce conflict for ADD resolved as shift
+  ! shift/reduce conflict for SUB resolved as shift
+  ! shift/reduce conflict for MUL resolved as shift
+  ! shift/reduce conflict for DIV resolved as shift
+  ! shift/reduce conflict for REL_OP resolved as shift
+    COMMA           reduce using rule 32 (math_operation -> math_value operator math_operation .)
+    RPAREN          reduce using rule 32 (math_operation -> math_value operator math_operation .)
+    THEN            reduce using rule 32 (math_operation -> math_value operator math_operation .)
+    ADD             shift and go to state 94
+    SUB             shift and go to state 95
+    MUL             shift and go to state 96
+    DIV             shift and go to state 97
+    REL_OP          shift and go to state 98
+
+  ! ADD             [ reduce using rule 32 (math_operation -> math_value operator math_operation .) ]
+  ! SUB             [ reduce using rule 32 (math_operation -> math_value operator math_operation .) ]
+  ! MUL             [ reduce using rule 32 (math_operation -> math_value operator math_operation .) ]
+  ! DIV             [ reduce using rule 32 (math_operation -> math_value operator math_operation .) ]
+  ! REL_OP          [ reduce using rule 32 (math_operation -> math_value operator math_operation .) ]
+
+    operator                       shift and go to state 93
+
+state 126
+
+    (60) else_option -> ELSE LPAREN . statements RPAREN
+    (6) statements -> . statement
+    (7) statements -> . statement statements
+    (8) statement -> . variable_declaration SEMICOLON
+    (9) statement -> . variable_update SEMICOLON
+    (10) statement -> . alter_variable SEMICOLON
+    (11) statement -> . variable_with_alter SEMICOLON
+    (12) statement -> . alter_b_variable SEMICOLON
+    (13) statement -> . signal_function SEMICOLON
+    (14) statement -> . view_signal_function SEMICOLON
+    (15) statement -> . is_true_function SEMICOLON
+    (16) statement -> . case_statement SEMICOLON
+    (17) statement -> . procedure_call SEMICOLON
+    (18) statement -> . print_statement SEMICOLON
+    (19) variable_declaration -> . NEW ID COMMA type_value
+    (46) variable_update -> . VALUES LPAREN ID COMMA value RPAREN
+    (47) alter_variable -> . ALTER LPAREN ID COMMA operator COMMA value RPAREN
+    (48) variable_with_alter -> . VALUES LPAREN ID COMMA alter_variable RPAREN
+    (49) alter_b_variable -> . ALTER_B LPAREN ID RPAREN
+    (50) signal_function -> . SIGNAL LPAREN position_state COMMA position_state RPAREN
+    (53) view_signal_function -> . VIEW_SIGNAL LPAREN position_state RPAREN
+    (54) is_true_function -> . IS_TRUE LPAREN ID RPAREN
+    (55) case_statement -> . CASE ID case_options
+    (56) case_statement -> . CASE ID case_options else_option
+    (62) procedure_call -> . CALL LPAREN ID RPAREN
+    (63) print_statement -> . PRINT_VALUES LPAREN print_value_list RPAREN
+
+    NEW             shift and go to state 22
+    VALUES          shift and go to state 23
+    ALTER           shift and go to state 24
+    ALTER_B         shift and go to state 25
+    SIGNAL          shift and go to state 26
+    VIEW_SIGNAL     shift and go to state 27
+    IS_TRUE         shift and go to state 28
+    CASE            shift and go to state 29
+    CALL            shift and go to state 30
+    PRINT_VALUES    shift and go to state 31
+
+    statements                     shift and go to state 134
+    statement                      shift and go to state 10
+    variable_declaration           shift and go to state 11
+    variable_update                shift and go to state 12
+    alter_variable                 shift and go to state 13
+    variable_with_alter            shift and go to state 14
+    alter_b_variable               shift and go to state 15
+    signal_function                shift and go to state 16
+    view_signal_function           shift and go to state 17
+    is_true_function               shift and go to state 18
+    case_statement                 shift and go to state 19
+    procedure_call                 shift and go to state 20
+    print_statement                shift and go to state 21
+
+state 127
+
+    (59) when_statement -> WHEN value THEN . LPAREN statements RPAREN
+
+    LPAREN          shift and go to state 135
+
+
+state 128
+
+    (65) print_value_list -> print_value_list COMMA print_value .
+
+    RPAREN          reduce using rule 65 (print_value_list -> print_value_list COMMA print_value .)
+    COMMA           reduce using rule 65 (print_value_list -> print_value_list COMMA print_value .)
+
+
+state 129
+
+    (20) type_value -> LPAREN type COMMA . value RPAREN
+    (24) value -> . NUMBER
+    (25) value -> . BOOLEAN
+    (26) value -> . STRING
+    (27) value -> . ID
+    (28) value -> . arith_op
+    (29) arith_op -> . math_operation
+    (30) math_operation -> . math_operation operator math_operation
+    (31) math_operation -> . math_operation operator math_value
+    (32) math_operation -> . math_value operator math_operation
+    (33) math_operation -> . math_value operator math_value
+    (35) math_value -> . ID
+    (36) math_value -> . NUMBER
+    (37) math_value -> . math_value_negative
+    (38) math_value -> . math_operation_paren
+    (39) math_value_negative -> . SUB ID
+    (40) math_value_negative -> . SUB NUMBER
+    (34) math_operation_paren -> . LPAREN math_operation RPAREN
+
+    NUMBER          shift and go to state 64
+    BOOLEAN         shift and go to state 65
+    STRING          shift and go to state 66
+    ID              shift and go to state 109
+    SUB             shift and go to state 72
+    LPAREN          shift and go to state 60
+
+    value                          shift and go to state 136
+    arith_op                       shift and go to state 67
+    math_operation                 shift and go to state 68
+    math_value                     shift and go to state 69
+    math_value_negative            shift and go to state 70
+    math_operation_paren           shift and go to state 71
+
+state 130
+
+    (46) variable_update -> VALUES LPAREN ID COMMA value RPAREN .
+
+    SEMICOLON       reduce using rule 46 (variable_update -> VALUES LPAREN ID COMMA value RPAREN .)
+
+
+state 131
+
+    (48) variable_with_alter -> VALUES LPAREN ID COMMA alter_variable RPAREN .
+
+    SEMICOLON       reduce using rule 48 (variable_with_alter -> VALUES LPAREN ID COMMA alter_variable RPAREN .)
+
+
+state 132
+
+    (47) alter_variable -> ALTER LPAREN ID COMMA operator COMMA . value RPAREN
+    (24) value -> . NUMBER
+    (25) value -> . BOOLEAN
+    (26) value -> . STRING
+    (27) value -> . ID
+    (28) value -> . arith_op
+    (29) arith_op -> . math_operation
+    (30) math_operation -> . math_operation operator math_operation
+    (31) math_operation -> . math_operation operator math_value
+    (32) math_operation -> . math_value operator math_operation
+    (33) math_operation -> . math_value operator math_value
+    (35) math_value -> . ID
+    (36) math_value -> . NUMBER
+    (37) math_value -> . math_value_negative
+    (38) math_value -> . math_operation_paren
+    (39) math_value_negative -> . SUB ID
+    (40) math_value_negative -> . SUB NUMBER
+    (34) math_operation_paren -> . LPAREN math_operation RPAREN
+
+    NUMBER          shift and go to state 64
+    BOOLEAN         shift and go to state 65
+    STRING          shift and go to state 66
+    ID              shift and go to state 109
+    SUB             shift and go to state 72
+    LPAREN          shift and go to state 60
+
+    value                          shift and go to state 137
+    arith_op                       shift and go to state 67
+    math_operation                 shift and go to state 68
+    math_value                     shift and go to state 69
+    math_value_negative            shift and go to state 70
+    math_operation_paren           shift and go to state 71
+
+state 133
+
+    (50) signal_function -> SIGNAL LPAREN position_state COMMA position_state RPAREN .
+
+    SEMICOLON       reduce using rule 50 (signal_function -> SIGNAL LPAREN position_state COMMA position_state RPAREN .)
+
+
+state 134
+
+    (60) else_option -> ELSE LPAREN statements . RPAREN
+
+    RPAREN          shift and go to state 138
+
+
+state 135
+
+    (59) when_statement -> WHEN value THEN LPAREN . statements RPAREN
+    (6) statements -> . statement
+    (7) statements -> . statement statements
+    (8) statement -> . variable_declaration SEMICOLON
+    (9) statement -> . variable_update SEMICOLON
+    (10) statement -> . alter_variable SEMICOLON
+    (11) statement -> . variable_with_alter SEMICOLON
+    (12) statement -> . alter_b_variable SEMICOLON
+    (13) statement -> . signal_function SEMICOLON
+    (14) statement -> . view_signal_function SEMICOLON
+    (15) statement -> . is_true_function SEMICOLON
+    (16) statement -> . case_statement SEMICOLON
+    (17) statement -> . procedure_call SEMICOLON
+    (18) statement -> . print_statement SEMICOLON
+    (19) variable_declaration -> . NEW ID COMMA type_value
+    (46) variable_update -> . VALUES LPAREN ID COMMA value RPAREN
+    (47) alter_variable -> . ALTER LPAREN ID COMMA operator COMMA value RPAREN
+    (48) variable_with_alter -> . VALUES LPAREN ID COMMA alter_variable RPAREN
+    (49) alter_b_variable -> . ALTER_B LPAREN ID RPAREN
+    (50) signal_function -> . SIGNAL LPAREN position_state COMMA position_state RPAREN
+    (53) view_signal_function -> . VIEW_SIGNAL LPAREN position_state RPAREN
+    (54) is_true_function -> . IS_TRUE LPAREN ID RPAREN
+    (55) case_statement -> . CASE ID case_options
+    (56) case_statement -> . CASE ID case_options else_option
+    (62) procedure_call -> . CALL LPAREN ID RPAREN
+    (63) print_statement -> . PRINT_VALUES LPAREN print_value_list RPAREN
+
+    NEW             shift and go to state 22
+    VALUES          shift and go to state 23
+    ALTER           shift and go to state 24
+    ALTER_B         shift and go to state 25
+    SIGNAL          shift and go to state 26
+    VIEW_SIGNAL     shift and go to state 27
+    IS_TRUE         shift and go to state 28
+    CASE            shift and go to state 29
+    CALL            shift and go to state 30
+    PRINT_VALUES    shift and go to state 31
+
+    statements                     shift and go to state 139
+    statement                      shift and go to state 10
+    variable_declaration           shift and go to state 11
+    variable_update                shift and go to state 12
+    alter_variable                 shift and go to state 13
+    variable_with_alter            shift and go to state 14
+    alter_b_variable               shift and go to state 15
+    signal_function                shift and go to state 16
+    view_signal_function           shift and go to state 17
+    is_true_function               shift and go to state 18
+    case_statement                 shift and go to state 19
+    procedure_call                 shift and go to state 20
+    print_statement                shift and go to state 21
+
+state 136
+
+    (20) type_value -> LPAREN type COMMA value . RPAREN
+
+    RPAREN          shift and go to state 140
+
+
+state 137
+
+    (47) alter_variable -> ALTER LPAREN ID COMMA operator COMMA value . RPAREN
+
+    RPAREN          shift and go to state 141
+
+
+state 138
+
+    (60) else_option -> ELSE LPAREN statements RPAREN .
+
+    SEMICOLON       reduce using rule 60 (else_option -> ELSE LPAREN statements RPAREN .)
+
+
+state 139
+
+    (59) when_statement -> WHEN value THEN LPAREN statements . RPAREN
+
+    RPAREN          shift and go to state 142
+
+
+state 140
+
+    (20) type_value -> LPAREN type COMMA value RPAREN .
+
+    SEMICOLON       reduce using rule 20 (type_value -> LPAREN type COMMA value RPAREN .)
+
+
+state 141
+
+    (47) alter_variable -> ALTER LPAREN ID COMMA operator COMMA value RPAREN .
+
+    SEMICOLON       reduce using rule 47 (alter_variable -> ALTER LPAREN ID COMMA operator COMMA value RPAREN .)
+    RPAREN          reduce using rule 47 (alter_variable -> ALTER LPAREN ID COMMA operator COMMA value RPAREN .)
+
+
+state 142
+
+    (59) when_statement -> WHEN value THEN LPAREN statements RPAREN .
+
+    WHEN            reduce using rule 59 (when_statement -> WHEN value THEN LPAREN statements RPAREN .)
+    ELSE            reduce using rule 59 (when_statement -> WHEN value THEN LPAREN statements RPAREN .)
+    SEMICOLON       reduce using rule 59 (when_statement -> WHEN value THEN LPAREN statements RPAREN .)
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for ADD in state 122 resolved as shift
+WARNING: shift/reduce conflict for SUB in state 122 resolved as shift
+WARNING: shift/reduce conflict for MUL in state 122 resolved as shift
+WARNING: shift/reduce conflict for DIV in state 122 resolved as shift
+WARNING: shift/reduce conflict for REL_OP in state 122 resolved as shift
+WARNING: shift/reduce conflict for ADD in state 123 resolved as shift
+WARNING: shift/reduce conflict for SUB in state 123 resolved as shift
+WARNING: shift/reduce conflict for MUL in state 123 resolved as shift
+WARNING: shift/reduce conflict for DIV in state 123 resolved as shift
+WARNING: shift/reduce conflict for REL_OP in state 123 resolved as shift
+WARNING: shift/reduce conflict for ADD in state 124 resolved as shift
+WARNING: shift/reduce conflict for SUB in state 124 resolved as shift
+WARNING: shift/reduce conflict for MUL in state 124 resolved as shift
+WARNING: shift/reduce conflict for DIV in state 124 resolved as shift
+WARNING: shift/reduce conflict for REL_OP in state 124 resolved as shift
+WARNING: shift/reduce conflict for ADD in state 125 resolved as shift
+WARNING: shift/reduce conflict for SUB in state 125 resolved as shift
+WARNING: shift/reduce conflict for MUL in state 125 resolved as shift
+WARNING: shift/reduce conflict for DIV in state 125 resolved as shift
+WARNING: shift/reduce conflict for REL_OP in state 125 resolved as shift
+WARNING: reduce/reduce conflict in state 3 resolved using rule (procedure_set -> procedure)
+WARNING: rejected rule (empty -> <empty>) in state 3
+WARNING: reduce/reduce conflict in state 63 resolved using rule (value -> ID)
+WARNING: rejected rule (position_state -> ID) in state 63
+WARNING: reduce/reduce conflict in state 75 resolved using rule (case_statement -> CASE ID case_options)
+WARNING: rejected rule (empty -> <empty>) in state 75
+WARNING: Rule (position_state -> ID) is never reduced
