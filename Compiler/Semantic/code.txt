@@ -2,12 +2,28 @@
 
 Proc @Master
 (
+    New @var123, (Num, ((12 ADD 3) SUB 5) MUL 2);
+    New @var321, (Num, @var123 DIV 2);
     New @name, (String, "Emanuel");
-    New @age, (Num, 23);
-    PrintValues("Hola me llamo ", @name, " y mi edad es: ", @age);
-    New @single, (Bool, True);
-    PrintValues(IsTrue(@single));
-    PrintValues("El estado del motor 2 es: ", ViewSignal(2));
-    Signal(2, 1);
-    PrintValues("El estado del motor 2 es: ", ViewSignal(2));
+
+
+    New @variable1, (Num, 100);
+    While @variable1 >= 10 (
+        PrintValues("Tengo: ", @variable1);
+        Signal(4, 1);
+        Signal(5, 1);
+        Values(@variable1, Alter(@variable1, SUB, 10));
+    );
+
+    New @var1, (Bool, True);
+    While IsTrue(@var1) (
+        PrintValues("El estado del motor 2 es: ", ViewSignal(2));
+        Signal(2, 1);
+        PrintValues("El estado del motor 2 es: ", ViewSignal(2));
+        New @var2, (Num, 23);
+        PrintValues("El valor de '@var2' es: ", @var2);
+        Values(@var2, 12);
+        PrintValues("El nuevo valor de '@var2' es: ", @var2);
+        AlterB(@var1);
+    );
 );

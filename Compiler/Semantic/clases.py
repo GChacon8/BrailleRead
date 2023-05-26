@@ -1,12 +1,14 @@
+import copy
 from Semantic.arithmetic_operation import *
 
 
 class value(Instruction):
     def __init__(self, value):
         self.value = value
+        self.temp = self.value
 
     def eval(self, func, ID, type, program, symbolTable, scope):
-        self.value = self.getValue(program, symbolTable)
+        self.value = self.getResult(program, symbolTable)
         validateType(ID, self.value, type, program)
 
         if func == "New":
@@ -17,7 +19,8 @@ class value(Instruction):
             if (verifyType(self.value, int) and type == "Num") or (verifyType(self.value, bool) and type == "Bool") or (verifyType(self.value, str) and type == "String"):
                 update(ID, self.value, program, symbolTable)
 
-    def getValue(self, program, symbolTable):
+    def getResult(self, program, symbolTable):
+        self.temp = copy.deepcopy(self.value)
         symbol = None
         if verifyType(self.value, str) and self.value.startswith('@'):
             symbol = searchSymbolByID(self.value, program, symbolTable)
@@ -32,7 +35,9 @@ class value(Instruction):
         if verifyType(self.value, MathValueNegative):
             self.value = self.value.eval(program, symbolTable)
 
-        return self.value
+        result = self.value
+        self.value = self.temp
+        return result
 
 
 class VariableDeclaration(Instruction):
@@ -141,8 +146,8 @@ class SignalFunction(Instruction):
         self.scope = "local"
 
     def eval(self, program, symbolTable):
-        position = self.position.value.getValue(program, symbolTable)
-        state = self.state.value.getValue(program, symbolTable)
+        position = self.position.value.getResult(program, symbolTable)
+        state = self.state.value.getResult(program, symbolTable)
 
         if getType(position) != "Num":
             program.semanticError.valueNotNumerical(position)
@@ -172,7 +177,7 @@ class ViewSignalFunction(Instruction):
         self.result = None
 
     def eval(self, program, symbolTable):
-        position = self.position.value.getValue(program, symbolTable)
+        position = self.position.value.getResult(program, symbolTable)
 
         if getType(position) != "Num" or (position is True or position is False):
             program.semanticError.valueNotNumerical(position)
@@ -243,6 +248,33 @@ class CaseStatement(Instruction):
             symbolTable.removeSymbolByID(variable)
 
 
+class WhileStatement(Instruction):
+    def __init__(self, func, condition, expressions):
+        self.func = func
+        self.condition = condition
+        self.expressions = expressions
+        self.local_variables = []
+        self.scope = "local"
+
+    def eval(self, program, symbolTable):
+        result = self.condition.getResult(program, symbolTable)
+        while result:
+            for expression in self.expressions:
+                if expression:
+                    if verifyType(expression, VariableDeclaration):
+                        expression.scope = "local"
+                    expression.eval(program, symbolTable)
+
+                    if expression.func == "New":
+                        if symbolTable.getSymbolByID(expression.ID):
+                            self.local_variables.append(expression.ID)
+
+            for variable in self.local_variables:
+                symbolTable.removeSymbolByID(variable)
+
+            result = self.condition.getResult(program, symbolTable)
+
+
 class PrintValues(Instruction):
     def __init__(self, func, print_value_list):
         self.func = func
@@ -253,7 +285,7 @@ class PrintValues(Instruction):
     def eval(self, program, symbolTable):
         for expression in self.print_value_list:
             if verifyType(expression, value):
-                prev_result = expression.getValue(program, symbolTable)
+                prev_result = expression.getResult(program, symbolTable)
                 if prev_result is None:
                     return
                 if isinstance(prev_result, str):
@@ -269,3 +301,4 @@ class PrintValues(Instruction):
                     self.result += str(prev_result)
 
         program.programOutput.append(self.result)
+        self.result = ""

@@ -59,6 +59,7 @@ def p_statement(p):
                  | view_signal_function SEMICOLON
                  | is_true_function SEMICOLON
                  | case_statement SEMICOLON
+                 | while_statement SEMICOLON
                  | procedure_call SEMICOLON
                  | print_statement SEMICOLON
                  | empty'''
@@ -220,6 +221,16 @@ def p_else_option(p):
     '''else_option : ELSE LPAREN statements RPAREN'''
     p[0] = p[3]
 
+
+def p_while_statement(p):
+    '''while_statement : WHILE condition LPAREN statements RPAREN'''
+    p[0] = WhileStatement(p[1], p[2], p[4])
+
+
+def p_condition(p):
+    '''condition : value
+                 | is_true_function'''
+    p[0] = p[1]
 
 def p_procedure_call(p):
     '''procedure_call : CALL LPAREN ID RPAREN'''
