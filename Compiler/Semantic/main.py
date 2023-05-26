@@ -13,6 +13,10 @@ with open("code.txt", "r") as file:
         if not syntax_errors:
             program = semantic_analysis(res)
             if not program.getErrors():
+                if program.programOutput:
+                    print("\n")
+                    for ele in program.programOutput:
+                        print(ele)
                 print("\nFile compiled successfully!!!")
             else:
                 for error in program.getErrors():

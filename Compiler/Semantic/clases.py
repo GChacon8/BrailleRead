@@ -268,4 +268,4 @@ class PrintValues(Instruction):
                 else:
                     self.result += str(prev_result)
 
-        print(self.result)
+        program.programOutput.append(self.result)
