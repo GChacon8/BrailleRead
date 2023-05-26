@@ -1,5 +1,5 @@
-import copy
 from Semantic.arithmetic_operation import *
+from Semantic.symbol_table import *
 
 
 class value(Instruction):
@@ -345,6 +345,35 @@ class RepeatStatement(Instruction):
 
             for variable in self.local_variables:
                 symbolTable.removeSymbolByID(variable)
+
+
+class ProcedureCall(Instruction):
+    def __init__(self, func, ID):
+        self.func = func
+        self.ID = ID
+        self.local_variables = []
+        self.scope = "local"
+
+    def eval(self, program, symbolTable):
+        symbol_procedure = program.symbolTable.getProcedureByID(self.ID)
+
+        if symbol_procedure:
+            procedure = symbol_procedure.getProcedures()[0]
+            if procedure:
+                for expression in procedure.getExpressions():
+                    if expression:
+                        if verifyType(expression, VariableDeclaration):
+                            expression.scope = "local"
+                        expression.eval(program, symbolTable)
+
+                        if expression.func == "New":
+                            if symbolTable.getSymbolByID(expression.ID):
+                                self.local_variables.append(expression.ID)
+
+                for variable in self.local_variables:
+                    symbolTable.removeSymbolByID(variable)
+        else:
+            program.semanticError.procedureNotFound(self.ID)
 
 
 class PrintValues(Instruction):

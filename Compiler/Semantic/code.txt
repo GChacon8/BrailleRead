@@ -2,13 +2,28 @@
 
 Proc @Master
 (
-    Repeat (
-        PrintValues("Hola");
-        Signal(2, 1);
-        Signal(3, 1);
-        Break;
-        Signal(2, 0);
-        Signal(3, 0);
-        PrintValues("Adios");
-    );
+    New @var1, (Num, 20);
+    New @num, (Num, 50);
+    PrintValues("Valor de '@var1' es: ", @var1);
+    PrintValues("Llamo a '@A'");
+    Call(@A);
+    PrintValues("El nuevo valor de '@var1' es: ", @var1);
+);
+
+Proc @A
+(
+    New @var2, (Num, 23);
+    Values(@var2, Alter(@var2, ADD, 27));
+    PrintValues("Valor de '@var2' es: ", @var2);
+    Signal(1, 1);
+    PrintValues("Llamo a '@B'");
+    Call(@B);
+);
+
+Proc @B
+(
+    New @var3, (Num, 25);
+    PrintValues("Valor de '@var3' es: ", @var3);
+    Values(@var1, Alter(@num, SUB, 45));
+    Signal(3, 1);
 );

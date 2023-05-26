@@ -58,7 +58,10 @@ class SymbolTable:
             return None
 
     def getProcedureByID(self, ID):
-        return self.procedureTable[ID]
+        try:
+            return self.procedureTable[ID]
+        except KeyError:
+            return None
 
     def addProcedureSymbol(self, ID, procedure):
         if ID in self.procedureTable:

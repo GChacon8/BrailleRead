@@ -248,7 +248,7 @@ def p_repeat_statement(p):
 
 def p_procedure_call(p):
     '''procedure_call : CALL LPAREN ID RPAREN'''
-    p[0] = p[3]
+    p[0] = ProcedureCall(p[1], p[3])
 
 
 def p_print_statement(p):
