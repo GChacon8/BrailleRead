@@ -275,6 +275,33 @@ class WhileStatement(Instruction):
             result = self.condition.getResult(program, symbolTable)
 
 
+class UntilStatement(Instruction):
+    def __init__(self, func, expressions, condition):
+        self.func = func
+        self.expressions = expressions
+        self.condition = condition
+        self.local_variables = []
+        self.scope = "local"
+
+    def eval(self, program, symbolTable):
+        result = True
+        while result:
+            for expression in self.expressions:
+                if expression:
+                    if verifyType(expression, VariableDeclaration):
+                        expression.scope = "local"
+                    expression.eval(program, symbolTable)
+
+                    if expression.func == "New":
+                        if symbolTable.getSymbolByID(expression.ID):
+                            self.local_variables.append(expression.ID)
+
+            for variable in self.local_variables:
+                symbolTable.removeSymbolByID(variable)
+
+            result = not(self.condition.getResult(program, symbolTable))
+
+
 class PrintValues(Instruction):
     def __init__(self, func, print_value_list):
         self.func = func

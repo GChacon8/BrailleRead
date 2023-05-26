@@ -60,6 +60,7 @@ def p_statement(p):
                  | is_true_function SEMICOLON
                  | case_statement SEMICOLON
                  | while_statement SEMICOLON
+                 | until_statement SEMICOLON
                  | procedure_call SEMICOLON
                  | print_statement SEMICOLON
                  | empty'''
@@ -231,6 +232,11 @@ def p_condition(p):
     '''condition : value
                  | is_true_function'''
     p[0] = p[1]
+
+
+def p_until_statement(p):
+    '''until_statement : UNTIL LPAREN statements RPAREN condition'''
+    p[0] = UntilStatement(p[1], p[3], p[5])
 
 def p_procedure_call(p):
     '''procedure_call : CALL LPAREN ID RPAREN'''
