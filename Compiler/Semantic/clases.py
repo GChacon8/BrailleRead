@@ -170,10 +170,30 @@ class SignalFunction(Instruction):
         if position in [1, 2, 3, 4, 5, 6]:
             if state in [0, 1]:
                 update(str(position), state, program, symbolTable)
+                self.signal(str(position), str(state), program)
             else:
                 program.semanticError.badState(state)
         else:
             program.semanticError.badPosition(position)
+
+
+    def signal(self, position, state, program):
+        output = "Signal;" + "s" + position + state
+        program.programOutput.append(output)
+
+
+class EndSignalFunction(Instruction):
+    def __init__(self, func):
+        self.func = func
+        self.scope = "local"
+
+    def eval(self, program, symbolTable):
+        self.end_signal(program)
+
+
+    def end_signal(self, program):
+        output = "EndSignal;" + "z"
+        program.programOutput.append(output)
 
 
 class ViewSignalFunction(Instruction):
@@ -401,5 +421,34 @@ class PrintValues(Instruction):
                 else:
                     self.result += str(prev_result)
 
-        program.programOutput.append(self.result)
+        program.getPrints().append(self.result)
+        self.result = ""
+
+
+class Write(Instruction):
+    def __init__(self, func, print_value_list):
+        self.func = func
+        self.print_value_list = print_value_list
+        self.scope = "local"
+        self.result = ""
+
+    def eval(self, program, symbolTable):
+        for expression in self.print_value_list:
+            if verifyType(expression, value):
+                prev_result = expression.getResult(program, symbolTable)
+                if prev_result is None:
+                    return
+                if isinstance(prev_result, str):
+                    self.result += prev_result
+                else:
+                    self.result += str(prev_result)
+
+            elif verifyType(expression, IsTrueFunction) or verifyType(expression, ViewSignalFunction):
+                prev_result = expression.getResult(program, symbolTable)
+                if prev_result is None:
+                    return
+                else:
+                    self.result += str(prev_result)
+
+        program.programOutput.append("Write;w" + self.result)
         self.result = ""

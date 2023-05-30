@@ -1,8 +1,8 @@
+from Lexical.lexer import *
+from Semantic.semantic import *
 import ply.yacc as yacc
 import sys
 sys.path.append("..")
-from Lexical.lexer import *
-from Semantic.semantic import *
 
 data = ""
 
@@ -56,6 +56,7 @@ def p_statement(p):
                  | variable_with_alter SEMICOLON
                  | alter_b_variable SEMICOLON
                  | signal_function SEMICOLON
+                 | end_signal_function SEMICOLON
                  | view_signal_function SEMICOLON
                  | is_true_function SEMICOLON
                  | case_statement SEMICOLON
@@ -64,6 +65,7 @@ def p_statement(p):
                  | repeat_statement SEMICOLON
                  | procedure_call SEMICOLON
                  | print_statement SEMICOLON
+                 | write_statement SEMICOLON
                  | break SEMICOLON
                  | empty'''
     p[0] = p[1]
@@ -187,6 +189,11 @@ def p_position_state(p):
     p[0] = value(p[1])
 
 
+def p_end_signal_function(p):
+    '''end_signal_function : END_SIGNAL LPAREN RPAREN'''
+    p[0] = EndSignalFunction(p[1])
+
+
 def p_view_signal_function(p):
     '''view_signal_function : VIEW_SIGNAL LPAREN position_state RPAREN'''
     p[0] = ViewSignalFunction(p[1], p[3])
@@ -270,6 +277,11 @@ def p_print_value(p):
                    | is_true_function
                    | view_signal_function'''
     p[0] = p[1]
+
+
+def p_write_statement(p):
+    '''write_statement : WRITE LPAREN print_value_list RPAREN'''
+    p[0] = Write(p[1], p[3])
 
 
 def p_break(p):

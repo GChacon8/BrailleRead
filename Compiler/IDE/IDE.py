@@ -1,10 +1,12 @@
+from Compiler import *
 import tkinter as tk
-import traceback
 from tkinter import messagebox
 from tkinter.filedialog import asksaveasfilename, askopenfilename
+import sys
+sys.path.append("..")
 
-class IDE:
 
+class IDE(object):
     def __init__(self, master):
         self.master = master
         self.master.title("BrailleRead IDE")
@@ -33,11 +35,14 @@ class IDE:
 
         # Crea un área de texto para editar el código.
         self.coding_area = tk.Text(self.master)
-        self.coding_area = tk.Text(root, height=25, width=129, bg= "#1E1E1E", fg='aqua')
+        self.coding_area = tk.Text(root, height=21, width=129, bg= "#1E1E1E", fg='aqua', font=("Segoe UI", 11))
         self.coding_area.place(x=50,y=10)
         self.coding_area.bind('<Key>', self.line_number)
         self.coding_area.bind('<Motion>', self.line_number)
         self.coding_area.bind('<MouseWheel>', self.line_number)
+        self.coding_area.bind('<Tab>', self.insert_spaces)
+        self.coding_area.bind('<Return>', self.handle_enter)
+        self.coding_area.config(insertbackground='white')
 
         self.error_area = tk.Text(self.master)
         self.error_area = tk.Text(root, height=10, width=134, bg= "#1E1E1E", fg='light gray', state='disabled')
@@ -70,23 +75,23 @@ class IDE:
 
         self.coding_area.bind('<Control-y>', self.redo)
 
-        #self.coding_area.bind('<KeyPress>', self.check_key_press)
-
-    #def check_key_press(self, event):
-        # Verificar si se presionó la combinación de teclas "Ctrl+S"
-        #if (event.state & 0x4) and (event.keysym.lower() == 's'):
-           # self.save_file()
     def run_program(self):
-        if self.saved:
-            print("Run")
-        else:
-            tk.messagebox.showinfo(message="Please save your \".br\" file before Running or Compiling", title="Unsaved File")
+        result = run_code(self.coding_area.get("1.0", "end"))
+        if isinstance(result, list):
+            self.console_area.configure(state='normal')
+            self.console_area.delete("1.0", tk.END)
+            for ele in result:
+                self.console_area.insert(tk.END, ele + "\n")
+            self.console_area.configure(state='disabled')
 
     def compile_program(self):
-        if self.saved:
-            print("Compile")
-        else:
-            tk.messagebox.showinfo(message="Please save your \".br\" file before Running or Compiling", title="Unsaved File")
+        result = compile_code(self.coding_area.get("1.0", "end"))
+        if isinstance(result, list):
+            self.console_area.configure(state='normal')
+            self.console_area.delete("1.0", tk.END)
+            for ele in result:
+                self.console_area.insert(tk.END, ele + "\n")
+            self.console_area.configure(state='disabled')
 
     def redo(self, event=None):
         # Rehacer la última acción deshecha
@@ -131,7 +136,7 @@ class IDE:
         self.error_area.place(x=10,y=470)
         self.errors_button.config(font= ('Segoe UI', '10', 'bold', 'underline'))
         self.console_button.config(font= ('Segoe UI', '10'))
-    
+
     def line_number(self, event):
         last_line = self.coding_area.index(tk.END)
         first_line = self.coding_area.index('@0,0')
@@ -143,6 +148,25 @@ class IDE:
             self.lineno_area.insert(tk.END, i+1)
             self.lineno_area.insert(tk.END, "\n")
         self.lineno_area.config(state="disabled")
+
+    def insert_spaces(self, event):
+        self.coding_area.insert(tk.INSERT, " " * 8)
+        return 'break'
+
+    def handle_enter(self, event):
+        current_line = self.coding_area.get("insert linestart", "insert")
+        indentation = ""
+
+        # Obtener la indentación de la línea actual
+        for char in current_line:
+            if char == " " or char == "\t":
+                indentation += char
+            else:
+                break
+
+        # Insertar una nueva línea con la indentación
+        self.coding_area.insert(tk.INSERT, "\n" + indentation)
+        return "break"
 
 root = tk.Tk()
 app = IDE(root)
