@@ -19,6 +19,5 @@ class Translator(object):
                 self.code += data[1]
             else:
                 print("Error in output " + data[0]+ " not recognized")
-            self.code += ";"
-        print(self.code.encode("ascii"))
+            self.code += "~"
         return self.code

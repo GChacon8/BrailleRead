@@ -35,7 +35,7 @@ class IDE(object):
 
         # Crea un área de texto para editar el código.
         self.coding_area = tk.Text(self.master)
-        self.coding_area = tk.Text(root, height=21, width=129, bg= "#1E1E1E", fg='aqua', font=("Segoe UI", 11))
+        self.coding_area = tk.Text(root, height=21, width=129, bg= "#1E1E1E", fg='aqua')
         self.coding_area.place(x=50,y=10)
         self.coding_area.bind('<Key>', self.line_number)
         self.coding_area.bind('<Motion>', self.line_number)
@@ -150,7 +150,7 @@ class IDE(object):
         self.lineno_area.config(state="disabled")
 
     def insert_spaces(self, event):
-        self.coding_area.insert(tk.INSERT, " " * 8)
+        self.coding_area.insert(tk.INSERT, " " * 4)
         return 'break'
 
     def handle_enter(self, event):
