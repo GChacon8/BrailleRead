@@ -1,5 +1,8 @@
 import ply.lex as lex
 
+lexical_errors = []
+lexer = None
+
 # language reserved words
 keywords = {
    'New' : 'NEW',
@@ -131,7 +134,6 @@ def t_error(t):
     lexical_errors.append("Illegal character '%s' at line %d, column %d" % (t.value[0], line, column))
 
 
-lexical_errors = []
-
-# Build the lexer
-lexer = lex.lex()
+def lexical_analysis():
+    global lexer
+    lexer = lex.lex()

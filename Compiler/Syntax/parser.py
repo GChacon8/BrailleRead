@@ -303,6 +303,7 @@ def p_error(p):
 def systax_analysis(source_code):
     global data
     data = source_code
+    lexical_analysis()
     parser = yacc.yacc(start="program")
     result = parser.parse(source_code)
     return result
