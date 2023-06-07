@@ -1,20 +1,14 @@
 // Test1
 
-// Procedimiento Master
 Proc @Master
 (
-    //A
-    Signal(3, 1);
-    EndSignal();
-    Call(@abc);
-    New @var1, (Num, 23);
-    New @var2, (Num, (@var1 SUB 3) DIV 5);
-    PrintValues("El valor de '@var2' es: ", @var2);
-);
+    New @var1, (Num, 1);
 
-// Procedimieto abc
-Proc @abc(
-    // Creacion de variable
-    New @var1, (Num, 28);
-    Signal(6, 1);
+    Repeat (
+        Signal(@var1, 1);
+        If @var1 == 3(
+            Break;
+        );
+        Alter(@var1, ADD, 1);
+	);
 );

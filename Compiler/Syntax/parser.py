@@ -83,6 +83,7 @@ def p_statement(p):
                  | case_statement SEMICOLON
                  | while_statement SEMICOLON
                  | until_statement SEMICOLON
+                 | if_statement SEMICOLON
                  | repeat_statement SEMICOLON
                  | procedure_call SEMICOLON
                  | print_statement SEMICOLON
@@ -269,6 +270,11 @@ def p_condition(p):
 def p_until_statement(p):
     '''until_statement : UNTIL LPAREN statements RPAREN condition'''
     p[0] = UntilStatement(p[1], p[3], p[5])
+
+
+def p_if_statement(p):
+    '''if_statement : IF condition LPAREN statements RPAREN'''
+    p[0] = IfStatement(p[1], p[2], p[4])
 
 
 def p_repeat_statement(p):

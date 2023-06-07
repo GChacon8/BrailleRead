@@ -24,6 +24,7 @@ keywords = {
    'Break' : 'BREAK',
    'Until' : 'UNTIL',
    'While' : 'WHILE',
+   'If' : 'IF',
    'Case' : 'CASE',
    'When' : 'WHEN',
    'Then' : 'THEN',

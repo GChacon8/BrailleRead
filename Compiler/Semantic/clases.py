@@ -330,6 +330,37 @@ class UntilStatement(Instruction):
             result = not(self.condition.getResult(program, symbolTable))
 
 
+class IfStatement(Instruction):
+    def __init__(self, func, condition, expressions):
+        self.func = func
+        self.condition = condition
+        self.expressions = expressions
+        self.local_variables = []
+        self.scope = "local"
+
+    def eval(self, program, symbolTable):
+        result = self.condition.getResult(program, symbolTable)
+        if result:
+            for expression in self.expressions:
+                if expression:
+                    if verifyType(expression, VariableDeclaration):
+                        expression.scope = "local"
+                    expression.eval(program, symbolTable)
+
+                    if expression.func == "New":
+                        if symbolTable.getSymbolByID(expression.ID):
+                            self.local_variables.append(expression.ID)
+
+                    if verifyType(expression, Break):
+                        result = False
+                        break
+
+            for variable in self.local_variables:
+                symbolTable.removeSymbolByID(variable)
+
+            return result
+
+
 class RepeatStatement(Instruction):
     def __init__(self, func, expressions):
         self.func = func
@@ -340,6 +371,12 @@ class RepeatStatement(Instruction):
     def eval(self, program, symbolTable):
         has_break = None
         for expression in self.expressions:
+            if verifyType(expression, IfStatement):
+                for exp in expression.expressions:
+                    if verifyType(exp, Break):
+                        has_break = True
+                        break
+
             if verifyType(expression, Break):
                 has_break = True
                 break
@@ -352,6 +389,12 @@ class RepeatStatement(Instruction):
         while result:
             for expression in self.expressions:
                 if expression:
+                    if verifyType(expression, IfStatement):
+                        result = expression.eval(program, symbolTable)
+                        if result is None:
+                            result = True
+                        continue
+
                     if verifyType(expression, VariableDeclaration):
                         expression.scope = "local"
                     expression.eval(program, symbolTable)
