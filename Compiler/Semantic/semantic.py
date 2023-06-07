@@ -1,8 +1,7 @@
+from Semantic.semantic_errors import *
+from Semantic.clases import *
 import sys
 sys.path.append("..")
-from Semantic.semantic_errors import *
-from Semantic.symbol_table import *
-from Semantic.clases import *
 
 
 def semantic_analysis(program):
@@ -28,11 +27,11 @@ class Program:
         return self.prints
 
     def isEmpty(self):
-        return self.expressions_set[0] == None
+        return self.expressions_set[0] is None
 
     def execute(self):
         for i in range(6):
-            addEngine(str(i+1), 0, self.symbolTable, "global")
+            addEngine(str(i + 1), 0, self.symbolTable, "global")
 
         if 1 not in self.comment_list:
             self.semanticError.incorrectCommentLine()
@@ -41,7 +40,7 @@ class Program:
         master_count = 0
         if not self.isEmpty():
             for expression in self.expressions_set:
-                if expression != None:
+                if expression is not None:
                     if expression.ID == "@Master":
                         master_count += 1
                         self.master = expression

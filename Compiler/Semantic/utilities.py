@@ -28,7 +28,7 @@ def checkValue(value, typeValue, program, symbolTable, error):
 
     elif verifyType(value, str):
         symbol = searchSymbolByID(value, program, symbolTable)
-        if symbol != None:
+        if symbol is not None:
             if verifyType(symbol.value, typeValue):
                 return symbol.value
             else:
@@ -57,7 +57,7 @@ def getType(value):
 
 
 def assignment(ID, value, program, symbolTable, scope):
-    if value != None:
+    if value is not None:
         if not symbolTable.exist(ID):
             symbolTable.addSymbol(ID, value, type(value), scope)
         else:
@@ -65,7 +65,7 @@ def assignment(ID, value, program, symbolTable, scope):
 
 
 def update(ID, value, program, symbolTable):
-    if value != None:
+    if value is not None:
         if not symbolTable.exist(ID):
             program.semanticError.variableNotDefined(ID)
         else:

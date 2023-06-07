@@ -7,6 +7,9 @@ Proc @Master
     Signal(3, 1);
     EndSignal();
     Call(@abc);
+    New @var1, (Num, 23);
+    New @var2, (Num, (@var1 SUB 3) DIV 5);
+    PrintValues("El valor de '@var2' es: ", @var2);
 );
 
 // Procedimieto abc

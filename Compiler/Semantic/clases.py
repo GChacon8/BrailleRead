@@ -47,6 +47,7 @@ class Break(Instruction):
     def eval(self, program, symbolTable):
         pass
 
+
 class VariableDeclaration(Instruction):
     def __init__(self, func, ID, type_value):
         self.func = func

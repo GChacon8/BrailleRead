@@ -8,7 +8,7 @@ class ArithmeticOperation(Instruction):
     def eval(self, program, symbolTable):
         operation_value = self.operation.eval(program, symbolTable)
 
-        if operation_value != None:
+        if operation_value is not None:
             if self.operation.operator == '<>':
                 operation_value = operation_value.replace('<>', '!=')
                 return bool(eval(operation_value))
@@ -28,12 +28,12 @@ class MathOperation(Instruction):
         left_operation_value, right_operation_value = None, None
 
         if verifyType(self.left_operation,
-                      MathValueNegative) and self.operator == None and self.right_operation == None:
+                      MathValueNegative) and self.operator is None and self.right_operation is None:
             return self.left_operation.eval(program, symbolTable)
 
         if self.left_operation == "(" and self.right_operation == ")":
             value = self.operator.eval(program, symbolTable)
-            if value != None:
+            if value is not None:
                 return "(" + str(value) + ")"
 
         if verifyType(self.left_operation, MathOperation) or verifyType(self.left_operation, MathValue):
@@ -42,7 +42,7 @@ class MathOperation(Instruction):
         if verifyType(self.right_operation, MathOperation) or verifyType(self.right_operation, MathValue):
             right_operation_value = self.right_operation.eval(program, symbolTable)
 
-        if left_operation_value != None and right_operation_value != None:
+        if left_operation_value is not None and right_operation_value is not None:
             return left_operation_value + self.operator + right_operation_value
 
 
@@ -56,7 +56,7 @@ class MathValue:
 
         elif verifyType(self.mathValue, str):
             symbol = searchSymbolByID(self.mathValue, program, symbolTable)
-            if symbol != None:
+            if symbol is not None:
                 if verifyType(symbol.value, int):
                     return str(symbol.value)
                 else:
@@ -76,7 +76,7 @@ class MathValueNegative:
 
         elif verifyType(self.mathValue, str):
             symbol = searchSymbolByID(self.mathValue, program, symbolTable)
-            if symbol != None:
+            if symbol is not None:
                 if verifyType(symbol.value, int):
                     return "-" + str(symbol.value)
                 else:
@@ -84,5 +84,5 @@ class MathValueNegative:
 
         elif verifyType(self.mathValue, MathOperation) or verifyType(self.mathValue, MathValueNegative):
             value = self.mathValue.eval(program, symbolTable)
-            if value != None:
+            if value is not None:
                 return "-" + str(value)
