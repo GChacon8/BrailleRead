@@ -48,11 +48,11 @@ class Program:
                     expression.eval(self, self.symbolTable)
 
         if master_count == 0:
-            self.semanticError.mainNotFound()
+            self.semanticError.masterNotFound()
             return
 
         if master_count > 1:
-            self.semanticError.mainMultipleDefinition()
+            self.semanticError.masterMultipleDefinition()
             return
 
         else:

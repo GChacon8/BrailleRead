@@ -15,12 +15,12 @@ class SemanticError:
     def incorrectCommentLine(self):
         self.errors.append(f"Error: The initial comment is not on the first line of the program")
 
-    # Main errors
-    def mainNotFound(self):
-        self.errors.append(f"Semantic error: Main not found")
+    # Master errors
+    def masterNotFound(self):
+        self.errors.append(f"Semantic error: Master not found")
 
-    def mainMultipleDefinition(self):
-        self.errors.append(f"Semantic error: Main multiple definition")
+    def masterMultipleDefinition(self):
+        self.errors.append(f"Semantic error: Master multiple definition")
 
     # if error
     def invalidComparatorBoolean(self):
