@@ -34,6 +34,7 @@ keywords = {
 tokens = [
    'NUMBER',
    'BOOLEAN',
+   'COMMENT',
    'ID',
    'ADD',
    'SUB',
@@ -77,7 +78,7 @@ def t_STRING(t):
 # No return value. Token discarded
 def t_COMMENT(t):
     r'\/\/.*'
-    pass
+    return t
 
 
 # Arithmetic Operators tokens

@@ -12,6 +12,9 @@ class SemanticError:
     def addError(self, error):
         self.errors.append(error)
 
+    def incorrectCommentLine(self):
+        self.errors.append(f"Error: The initial comment is not on the first line of the program")
+
     # Main errors
     def mainNotFound(self):
         self.errors.append(f"Semantic error: Main not found")

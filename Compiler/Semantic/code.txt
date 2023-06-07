@@ -1,8 +1,17 @@
-// Test parser
+// Test1
 
+// Procedimiento Master
 Proc @Master
 (
     //A
-    Signal(1, 0);
+    Signal(3, 1);
     EndSignal();
+    Call(@abc);
+);
+
+// Procedimieto abc
+Proc @abc(
+    // Creacion de variable
+    New @var1, (Num, 28);
+    Signal(6, 1);
 );

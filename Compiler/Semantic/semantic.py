@@ -12,7 +12,8 @@ def semantic_analysis(program):
 
 # Defines the behavior of the main program, the Master is searched for and evaluated
 class Program:
-    def __init__(self, expressions_set):
+    def __init__(self, comment_list, expressions_set):
+        self.comment_list = comment_list
         self.expressions_set = expressions_set
         self.master = None
         self.semanticError = SemanticError()
@@ -32,6 +33,11 @@ class Program:
     def execute(self):
         for i in range(6):
             addEngine(str(i+1), 0, self.symbolTable, "global")
+
+        if 1 not in self.comment_list:
+            self.semanticError.incorrectCommentLine()
+            return
+
         master_count = 0
         if not self.isEmpty():
             for expression in self.expressions_set:

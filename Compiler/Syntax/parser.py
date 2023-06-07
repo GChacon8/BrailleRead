@@ -9,6 +9,9 @@ data = ""
 # List of errors
 syntax_errors = []
 
+# List of comments
+systax_comments = []
+
 # Rules of precedence
 precedence = (
     ('left', 'ADD', 'SUB'),
@@ -19,17 +22,35 @@ precedence = (
 
 def p_program(p):
     '''program : procedure_set'''
-    p[0] = Program(p[1])
+    p[0] = Program(systax_comments, p[1])
 
 
 def p_procedure_set(p):
-    '''procedure_set : procedure procedure_set'''
-    p[0] = [p[1]] + p[2]
+    '''procedure_set : comments procedure procedure_set'''
+    global systax_comments
+    systax_comments = systax_comments + p.slice[1].value
+    p[0] = [p[2]] + p[3]
+
+
+def p_comments(p):
+    '''comments : empty
+                | COMMENT comments'''
+    if len(p) == 3:
+        p[0] = [p.slice[1].lineno] + p[2]
+    else:
+        p[0] = []
+
+
+def p_comments_2(p):
+    '''comments : COMMENT'''
+    p[0] = [p.slice[1].lineno]
 
 
 def p_procedure_set_2(p):
-    '''procedure_set : procedure'''
-    p[0] = [p[1]]
+    '''procedure_set : comments procedure'''
+    global systax_comments
+    systax_comments = systax_comments + p.slice[1].value
+    p[0] = [p[2]]
 
 
 def p_procedure(p):
@@ -67,8 +88,10 @@ def p_statement(p):
                  | print_statement SEMICOLON
                  | write_statement SEMICOLON
                  | break SEMICOLON
+                 | comments
                  | empty'''
-    p[0] = p[1]
+    if p.slice[1].type != "comments":
+        p[0] = p[1]
 
 
 def p_variable_declaration(p):
@@ -287,6 +310,7 @@ def p_write_statement(p):
 def p_break(p):
     '''break : BREAK'''
     p[0] = Break(p[1])
+
 
 def p_empty(p):
     '''empty : '''

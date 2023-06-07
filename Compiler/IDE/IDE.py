@@ -1,9 +1,9 @@
-import sys
-sys.path.append("..")
 from Compiler import *
 import tkinter as tk
 from tkinter import messagebox
 from tkinter.filedialog import asksaveasfilename, askopenfilename
+import sys
+sys.path.append("..")
 
 
 class IDE(object):
@@ -78,7 +78,7 @@ class IDE(object):
     def run_program(self):
         if self.filepath != "" and self.saved:
             with open(self.filepath, "r") as file:
-                result = compile_code(file.read())
+                result = run_code(file.read())
             if isinstance(result, list):
                 self.output_area.configure(state='normal')
                 self.output_area.delete("1.0", tk.END)
@@ -90,7 +90,7 @@ class IDE(object):
             if request:
                 self.save_file()
                 with open(self.filepath, "r") as file:
-                    result = compile_code(file.read())
+                    result = run_code(file.read())
                 if isinstance(result, list):
                     self.output_area.configure(state='normal')
                     self.output_area.delete("1.0", tk.END)

@@ -1,9 +1,9 @@
-import sys
-sys.path.append("..")
 from Syntax.parser import *
 from Semantic.semantic import *
 from Translator import *
 from Communication import *
+import sys
+sys.path.append("..")
 
 
 def compile_code(code):
