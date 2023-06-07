@@ -76,32 +76,57 @@ class IDE(object):
         self.coding_area.bind('<Control-y>', self.redo)
 
     def run_program(self):
-        if self.filepath != "":
+        if self.filepath != "" and self.saved:
             with open(self.filepath, "r") as file:
-                result = run_code(file.read())
+                result = compile_code(file.read())
             if isinstance(result, list):
                 self.output_area.configure(state='normal')
                 self.output_area.delete("1.0", tk.END)
                 for ele in result:
                     self.output_area.insert(tk.END, ele + "\n")
                 self.output_area.configure(state='disabled')
+        elif self.filepath != "" and self.saved == False:
+            request = tk.messagebox.askyesno("Save?", "Do you want to save your last changes before running?")
+            if request:
+                self.save_file()
+                with open(self.filepath, "r") as file:
+                    result = compile_code(file.read())
+                if isinstance(result, list):
+                    self.output_area.configure(state='normal')
+                    self.output_area.delete("1.0", tk.END)
+                    for ele in result:
+                        self.output_area.insert(tk.END, ele + "\n")
+                    self.output_area.configure(state='disabled')
         else:
-            tk.messagebox.showwarning("Warning", "Debe guardar el archivo antes de ejecutar el programa")
+            tk.messagebox.showwarning("Warning", "You must save your changes before running the program")
             self.save_file_as()
 
     def compile_program(self):
-        if self.filepath != "":
+        if self.filepath != "" and self.saved:
             with open(self.filepath, "r") as file:
-                result = run_code(file.read())
+                result = compile_code(file.read())
             if isinstance(result, list):
                 self.output_area.configure(state='normal')
                 self.output_area.delete("1.0", tk.END)
                 for ele in result:
                     self.output_area.insert(tk.END, ele + "\n")
                 self.output_area.configure(state='disabled')
+        elif self.filepath != "" and self.saved == False:
+            request = tk.messagebox.askyesno("Save?", "Do you want to save your last changes before compiling?")
+            if request:
+                self.save_file()
+                with open(self.filepath, "r") as file:
+                    result = compile_code(file.read())
+                if isinstance(result, list):
+                    self.output_area.configure(state='normal')
+                    self.output_area.delete("1.0", tk.END)
+                    for ele in result:
+                        self.output_area.insert(tk.END, ele + "\n")
+                    self.output_area.configure(state='disabled')
         else:
-            tk.messagebox.showwarning("Warning", "Debe guardar el archivo antes de compilar el programa")
+            tk.messagebox.showwarning("Warning", "You must save your changes before running the program")
             self.save_file_as()
+
 
     def redo(self, event=None):
         # Rehacer la última acción deshecha
@@ -133,7 +158,7 @@ class IDE(object):
         if self.filepath:
             with open(self.filepath, "w") as file:
                 file.write(self.coding_area.get("1.0", tk.END))
-            messagebox.showinfo("Guardar archivo", "El archivo se ha guardado correctamente.")
+            messagebox.showinfo("Save File", "File has been saved correctly.")
 
         self.saved = True
 
@@ -142,7 +167,7 @@ class IDE(object):
         if self.filepath:
             with open(self.filepath, "w") as file:
                 file.write(self.coding_area.get("1.0", tk.END))
-            messagebox.showinfo("Guardar archivo", "El archivo se ha guardado correctamente.")
+            messagebox.showinfo("Save File", "File has been saved correctly.")
         else:
             self.save_file_as()
 
