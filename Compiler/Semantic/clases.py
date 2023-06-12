@@ -393,7 +393,8 @@ class RepeatStatement(Instruction):
                         result = expression.eval(program, symbolTable)
                         if result is None:
                             result = True
-                        continue
+                        else:
+                            break
 
                     if verifyType(expression, VariableDeclaration):
                         expression.scope = "local"
