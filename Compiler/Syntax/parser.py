@@ -97,7 +97,7 @@ def p_statement(p):
 
 def p_variable_declaration(p):
     '''variable_declaration : NEW ID COMMA type_value'''
-    p[0] = VariableDeclaration(p[1], p[2], p[4])
+    p[0] = VariableDeclaration(p[1], p.slice[2], p[4])
 
 
 def p_type_value(p):
@@ -192,27 +192,27 @@ def p_operator(p):
 
 def p_variable_update(p):
     '''variable_update : VALUES LPAREN ID COMMA value RPAREN'''
-    p[0] = VariableUpdate(p[1], p[3], p[5])
+    p[0] = VariableUpdate(p[1], p.slice[3], p[5])
 
 
 def p_alter_variable(p):
     '''alter_variable : ALTER LPAREN ID COMMA operator COMMA value RPAREN'''
-    p[0] = AlterVariable(p[1], p[3], p[5], p[7])
+    p[0] = AlterVariable(p[1], p.slice[3], p[5], p[7])
 
 
 def p_variable_with_alter(p):
     '''variable_with_alter : VALUES LPAREN ID COMMA alter_variable RPAREN'''
-    p[0] = VariableWithAlter(p[1], p[3], p[5])
+    p[0] = VariableWithAlter(p[1], p.slice[3], p[5])
 
 
 def p_alter_b_variable(p):
     '''alter_b_variable : ALTER_B LPAREN ID RPAREN'''
-    p[0] = AlterBVariable(p[0], p[3])
+    p[0] = AlterBVariable(p[0], p.slice[3])
 
 
 def p_signal_function(p):
     '''signal_function : SIGNAL LPAREN position_state COMMA position_state RPAREN'''
-    p[0] = SignalFunction(p[1], p[3], p[5])
+    p[0] = SignalFunction(p.slice[1], p[3], p[5])
 
 
 def p_position_state(p):
@@ -227,21 +227,21 @@ def p_end_signal_function(p):
 
 def p_view_signal_function(p):
     '''view_signal_function : VIEW_SIGNAL LPAREN position_state RPAREN'''
-    p[0] = ViewSignalFunction(p[1], p[3])
+    p[0] = ViewSignalFunction(p.slice[1], p[3])
 
 
 def p_is_true_function(p):
     '''is_true_function : IS_TRUE LPAREN ID RPAREN'''
-    p[0] = IsTrueFunction(p[1], p[3])
+    p[0] = IsTrueFunction(p[1], p.slice[3])
 
 
 def p_case_statement(p):
     '''case_statement : CASE ID case_options
                       | CASE ID case_options else_option'''
     if len(p) == 4:
-        p[0] = CaseStatement(p[1], p[2], p[3], [])
+        p[0] = CaseStatement(p[1], p.slice[2], p[3], [])
     else:
-        p[0] = CaseStatement(p[1], p[2], p[3], p[4])
+        p[0] = CaseStatement(p[1], p.slice[2], p[3], p[4])
 
 
 def p_case_options(p):

@@ -11,15 +11,17 @@ def verifyType(value1, instance):
     return type(value1) == instance
 
 
-def validateType(ID, value, type, program):
+def validateType(token_ID, value, type, program):
+    line = token_ID.lineno
+    ID = token_ID.value
     if verifyType(value, int) and type != "Num":
-        program.semanticError.incompatibleType(ID)
+        program.semanticError.incompatibleType(line, ID)
 
     if verifyType(value, bool) and type != "Bool":
-        program.semanticError.incompatibleType(ID)
+        program.semanticError.incompatibleType(line, ID)
 
     if verifyType(value, str) and type != "String":
-        program.semanticError.incompatibleType(ID)
+        program.semanticError.incompatibleType(line, ID)
 
 
 def checkValue(value, typeValue, program, symbolTable, error):
@@ -35,6 +37,18 @@ def checkValue(value, typeValue, program, symbolTable, error):
                 error()
     else:
         error()
+
+
+def searchSymbolByID0(token_ID, program, symbolTable):
+    line = token_ID.lineno
+    ID = token_ID.value
+    if symbolTable.exist(ID):
+        return symbolTable.getSymbolByID(ID)
+    elif program.symbolTable.exist(ID):
+        return program.symbolTable.getSymbolByID(ID)
+    else:
+        program.semanticError.variableNotDefined0(line, ID)
+        return None
 
 
 def searchSymbolByID(ID, program, symbolTable):
@@ -56,24 +70,40 @@ def getType(value):
         return "String"
 
 
-def assignment(ID, value, program, symbolTable, scope):
+def assignment(token_ID, value, program, symbolTable, scope):
+    line = token_ID.lineno
+    ID = token_ID.value
     if value is not None:
         if not symbolTable.exist(ID):
             symbolTable.addSymbol(ID, value, type(value), scope)
         else:
-            program.semanticError.variableAlreadyDefined(ID)
+            program.semanticError.variableAlreadyDefined(line, ID)
 
 
-def update(ID, value, program, symbolTable):
+def update(token_ID, value, program, symbolTable):
+    line = token_ID.lineno
+    ID = token_ID.value
     if value is not None:
         if not symbolTable.exist(ID):
-            program.semanticError.variableNotDefined(ID)
+            program.semanticError.variableNotDefined(line, ID)
         else:
             old_value = symbolTable.getSymbolByID(ID)
             if verifyType(old_value.value, type(value)):
                 symbolTable.changeSymbolValue(ID, value)
             else:
-                program.semanticError.invalidSymbolType(ID)
+                program.semanticError.invalidSymbolType(line, ID)
+
+
+def update2(line, ID, value, program, symbolTable):
+    if value is not None:
+        if not symbolTable.exist(ID):
+            program.semanticError.variableNotDefined(line, ID)
+        else:
+            old_value = symbolTable.getSymbolByID(ID)
+            if verifyType(old_value.value, type(value)):
+                symbolTable.changeSymbolValue(ID, value)
+            else:
+                program.semanticError.invalidSymbolType(line, ID)
 
 
 def addEngine(ID, value, symbolTable, scope):

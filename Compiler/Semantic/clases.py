@@ -7,21 +7,20 @@ class value(Instruction):
         self.value = value
         self.temp = self.value
 
-    def eval(self, func, ID, type, program, symbolTable, scope):
+    def eval(self, func, token_ID, type, program, symbolTable, scope):
         self.value = self.getResult(program, symbolTable)
-        validateType(ID, self.value, type, program)
+        validateType(token_ID, self.value, type, program)
 
         if func == "New":
             if (verifyType(self.value, int) and type == "Num") or (verifyType(self.value, bool) and type == "Bool") or (verifyType(self.value, str) and type == "String"):
-                assignment(ID, self.value, program, symbolTable, scope)
+                assignment(token_ID, self.value, program, symbolTable, scope)
 
         elif func == "Values":
             if (verifyType(self.value, int) and type == "Num") or (verifyType(self.value, bool) and type == "Bool") or (verifyType(self.value, str) and type == "String"):
-                update(ID, self.value, program, symbolTable)
+                update(token_ID, self.value, program, symbolTable)
 
     def getResult(self, program, symbolTable):
         self.temp = copy.deepcopy(self.value)
-        symbol = None
         if verifyType(self.value, str) and self.value.startswith('@'):
             symbol = searchSymbolByID(self.value, program, symbolTable)
             if symbol is not None:
@@ -29,19 +28,10 @@ class value(Instruction):
             else:
                 return
 
-        if verifyType(self.value, ArithmeticOperation):
+        if verifyType(self.value, ArithmeticOperation) or verifyType(self.value, MathValueNegative):
             self.value = self.value.eval(program, symbolTable)
 
-        if verifyType(self.value, MathValueNegative):
-            self.value = self.value.eval(program, symbolTable)
-
-        if verifyType(self.value, IsTrueFunction):
-            self.value = self.value.getResult(program, symbolTable)
-
-        if verifyType(self.value, AlterVariable):
-            self.value = self.value.getResult(program, symbolTable)
-
-        if verifyType(self.value, ViewSignalFunction):
+        if verifyType(self.value, IsTrueFunction) or verifyType(self.value, AlterVariable) or verifyType(self.value, ViewSignalFunction):
             self.value = self.value.getResult(program, symbolTable)
 
         result = self.value
@@ -58,48 +48,51 @@ class Break(Instruction):
 
 
 class VariableDeclaration(Instruction):
-    def __init__(self, func, ID, type_value):
+    def __init__(self, func, token_ID, type_value):
         self.func = func
-        self.ID = ID
+        self.token_ID = token_ID
+        self.ID = token_ID.value
         self.type = type_value[0]
         self.value = type_value[1]
         self.scope = "local"
 
     def eval(self, program, symbolTable):
         if self.scope == "global":
-            self.value.eval(self.func, self.ID, self.type, program, program.symbolTable, "global")
+            self.value.eval(self.func, self.token_ID, self.type, program, program.symbolTable, "global")
         else:
-            self.value.eval(self.func, self.ID, self.type, program, symbolTable, "local")
+            self.value.eval(self.func, self.token_ID, self.type, program, symbolTable, "local")
 
 
 class VariableUpdate(Instruction):
-    def __init__(self, func, ID, value):
+    def __init__(self, func, token_ID, value):
         self.func = func
-        self.ID = ID
+        self.token_ID = token_ID
+        self.ID = token_ID.value
         self.value = value
         self.scope = "local"
 
     def eval(self, program, symbolTable):
-        symbol = searchSymbolByID(self.ID, program, symbolTable)
+        symbol = searchSymbolByID0(self.token_ID, program, symbolTable)
         if symbol:
             type = getType(symbol.value)
             if self.scope == "global":
-                self.value.eval(self.func, self.ID, type, program, program.symbolTable, "global")
+                self.value.eval(self.func, self.token_ID, type, program, program.symbolTable, "global")
             else:
-                self.value.eval(self.func, self.ID, type, program, symbolTable, "local")
+                self.value.eval(self.func, self.token_ID, type, program, symbolTable, "local")
 
 
 class AlterVariable(Instruction):
-    def __init__(self, func, ID, operator, value):
+    def __init__(self, func, token_ID, operator, value):
         self.func = func
-        self.ID = ID
+        self.token_ID = token_ID
+        self.ID = token_ID.value
         self.operator = operator
         self.value = value
         self.scope = "local"
         self.result = None
 
     def validate(self, program, symbolTable):
-        symbol = searchSymbolByID(self.ID, program, symbolTable)
+        symbol = searchSymbolByID0(self.token_ID, program, symbolTable)
         if symbol:
             if getType(symbol.value) == "Num":
                 self.result = symbol.value
@@ -113,12 +106,13 @@ class AlterVariable(Instruction):
                     self.result /= self.value.value
                 return True
             else:
-                program.semanticError.variableNotNumerical(self.ID)
+                line = self.token_ID.lineno
+                program.semanticError.variableNotNumerical(line, self.ID)
         return False
 
     def eval(self, program, symbolTable):
         if self.validate(program, symbolTable):
-            update(self.ID, self.result, program, symbolTable)
+            update(self.token_ID, self.result, program, symbolTable)
 
     def getResult(self, program, symbolTable):
         if self.validate(program, symbolTable):
@@ -126,38 +120,42 @@ class AlterVariable(Instruction):
 
 
 class VariableWithAlter(Instruction):
-    def __init__(self, func, ID, alter_variable):
+    def __init__(self, func, token_ID, alter_variable):
         self.func = func
-        self.ID = ID
+        self.token_ID = token_ID
+        self.ID = token_ID.value
         self.alter_variable = alter_variable
         self.scope = "local"
 
     def eval(self, program, symbolTable):
-        symbol = searchSymbolByID(self.ID, program, symbolTable)
+        symbol = searchSymbolByID0(self.token_ID, program, symbolTable)
         if symbol:
             result = self.alter_variable.getResult(program, symbolTable)
             if result is not None:
-                update(self.ID, result, program, symbolTable)
+                update(self.token_ID, result, program, symbolTable)
 
 
 class AlterBVariable(Instruction):
-    def __init__(self, func, ID):
+    def __init__(self, func, token_ID):
         self.func = func
-        self.ID = ID
+        self.token_ID = token_ID
+        self.ID = token_ID.value
         self.scope = "local"
 
     def eval(self, program, symbolTable):
-        symbol = searchSymbolByID(self.ID, program, symbolTable)
+        symbol = searchSymbolByID0(self.token_ID, program, symbolTable)
         if symbol:
             if getType(symbol.value) == "Bool":
-                update(self.ID, not symbol.value, program, symbolTable)
+                update(self.token_ID, not symbol.value, program, symbolTable)
             else:
-                program.semanticError.variableNotBoolean(self.ID)
+                line = self.token_ID.lineno
+                program.semanticError.variableNotBoolean(line, self.ID)
 
 
 class SignalFunction(Instruction):
-    def __init__(self, func, position, state):
-        self.func = func
+    def __init__(self, token_func, position, state):
+        self.token_func = token_func
+        self.func = token_func.value
         self.position = position
         self.state = state
         self.scope = "local"
@@ -165,13 +163,17 @@ class SignalFunction(Instruction):
     def eval(self, program, symbolTable):
         position = self.position.value.getResult(program, symbolTable)
         state = self.state.value.getResult(program, symbolTable)
+        line = self.token_func.lineno
+
+        if position is None or state is None:
+            return
 
         if getType(position) != "Num":
-            program.semanticError.valueNotNumerical(position)
+            program.semanticError.valueNotNumerical(line, position)
             return
 
         if getType(state) != "Num":
-            program.semanticError.valueNotNumerical(state)
+            program.semanticError.valueNotNumerical(line, state)
             return
 
         if (position is True or position is False) or (state is True or state is False):
@@ -179,12 +181,12 @@ class SignalFunction(Instruction):
 
         if position in [1, 2, 3, 4, 5, 6]:
             if state in [0, 1]:
-                update(str(position), state, program, symbolTable)
+                update2(-1, str(position), state, program, symbolTable)
                 self.signal(str(position), str(state), program)
             else:
-                program.semanticError.badState(state)
+                program.semanticError.badState(line, state)
         else:
-            program.semanticError.badPosition(position)
+            program.semanticError.badPosition(line, position)
 
 
     def signal(self, position, state, program):
@@ -199,7 +201,7 @@ class EndSignalFunction(Instruction):
 
     def eval(self, program, symbolTable):
         for i in range(6):
-            update(str(i + 1), 0, program, symbolTable)
+            update2(-1, str(i + 1), 0, program, symbolTable)
         self.end_signal(program)
 
 
@@ -209,24 +211,29 @@ class EndSignalFunction(Instruction):
 
 
 class ViewSignalFunction(Instruction):
-    def __init__(self, func, position):
-        self.func = func
+    def __init__(self, token_func, position):
+        self.token_func = token_func
+        self.func = token_func.value
         self.position = position
         self.scope = "local"
         self.result = None
 
     def eval(self, program, symbolTable):
         position = self.position.value.getResult(program, symbolTable)
+        line = self.token_func.lineno
+
+        if position is None:
+            return
 
         if getType(position) != "Num" or (position is True or position is False):
-            program.semanticError.valueNotNumerical(position)
+            program.semanticError.valueNotNumerical(line, position)
             return
 
         if position in [1, 2, 3, 4, 5, 6]:
             symbol = searchSymbolByID(str(position), program, symbolTable)
             self.result = symbol.value
         else:
-            program.semanticError.badPosition(position)
+            program.semanticError.badPosition(line, position)
 
     def getResult(self, program, symbolTable):
         self.eval(program, symbolTable)
@@ -234,19 +241,21 @@ class ViewSignalFunction(Instruction):
 
 
 class IsTrueFunction(Instruction):
-    def __init__(self, func, ID):
+    def __init__(self, func, token_ID):
         self.func = func
-        self.ID = ID
+        self.token_ID = token_ID
+        self.ID = token_ID.value
         self.scope = "local"
         self.result = None
 
     def eval(self, program, symbolTable):
-        symbol = searchSymbolByID(self.ID, program, symbolTable)
+        symbol = searchSymbolByID0(self.token_ID, program, symbolTable)
         if symbol:
             if getType(symbol.value) == "Bool":
                 self.result = symbol.value
             else:
-                program.semanticError.variableNotBoolean(self.ID)
+                line = self.token_ID.lineno
+                program.semanticError.variableNotBoolean(line, self.ID)
 
     def getResult(self, program, symbolTable):
         self.eval(program, symbolTable)
@@ -254,9 +263,10 @@ class IsTrueFunction(Instruction):
 
 
 class CaseStatement(Instruction):
-    def __init__(self, func, ID, case_options, else_option):
+    def __init__(self, func, token_ID, case_options, else_option):
         self.func = func
-        self.ID = ID
+        self.token_ID = token_ID
+        self.ID = token_ID.value
         self.expressions = None
         self.local_variables = []
         self.case_options = case_options
@@ -264,7 +274,7 @@ class CaseStatement(Instruction):
         self.scope = "local"
 
     def eval(self, program, symbolTable):
-        symbol = searchSymbolByID(self.ID, program, symbolTable)
+        symbol = searchSymbolByID0(self.token_ID, program, symbolTable)
         for i in range(len(self.case_options)):
             if self.case_options[i][0].value == symbol.value:
                 self.expressions = self.case_options[i][1]
@@ -308,10 +318,17 @@ class WhileStatement(Instruction):
                         if symbolTable.getSymbolByID(expression.ID):
                             self.local_variables.append(expression.ID)
 
+                    if program.semanticError.errors != []:
+                        result = False
+                        break
+
             for variable in self.local_variables:
                 symbolTable.removeSymbolByID(variable)
 
-            result = self.condition.getResult(program, symbolTable)
+            if result is False:
+                result = False
+            else:
+                result = self.condition.getResult(program, symbolTable)
 
 
 class UntilStatement(Instruction):
@@ -335,10 +352,17 @@ class UntilStatement(Instruction):
                         if symbolTable.getSymbolByID(expression.ID):
                             self.local_variables.append(expression.ID)
 
+                    if program.semanticError.errors != []:
+                        result = False
+                        break
+
             for variable in self.local_variables:
                 symbolTable.removeSymbolByID(variable)
 
-            result = not(self.condition.getResult(program, symbolTable))
+            if result is False:
+                result = False
+            else:
+                result = not(self.condition.getResult(program, symbolTable))
 
 
 class IfStatement(Instruction):
@@ -405,6 +429,7 @@ class RepeatStatement(Instruction):
                         if result is None:
                             result = True
                         else:
+                            result = False
                             break
 
                     if verifyType(expression, VariableDeclaration):
@@ -414,6 +439,10 @@ class RepeatStatement(Instruction):
                     if expression.func == "New":
                         if symbolTable.getSymbolByID(expression.ID):
                             self.local_variables.append(expression.ID)
+
+                    if program.semanticError.errors != []:
+                        result = False
+                        break
 
                     if verifyType(expression, Break):
                         result = False
