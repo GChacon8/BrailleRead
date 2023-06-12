@@ -40,8 +40,7 @@ def run_code(code):
             if not program.getErrors():
                 translator = Translator(program.programOutput)
                 open_serial()
-                send_serial(translator.Translate())
-                close_serial()
+                pre_send_serial(translator.Translate())
                 print(translator.output)
                 program.getPrints().insert(0, "File compiled successfully!!!")
                 return program.getPrints()
