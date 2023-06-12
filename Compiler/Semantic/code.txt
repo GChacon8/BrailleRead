@@ -2,16 +2,24 @@
 
 Proc @Master
 (
-    New @var1, (Num, 1);
-    If @var1 <> 2(
-        PrintValues("Soy distinto de 2");
-    );
+    New @var1, (Num, 2);
 
-    Repeat (
+    // #
+    Repeat(
         Signal(@var1, 1);
-        If @var1 == 3(
+        If @var1 >= 6(
             Break;
         );
-        Alter(@var1, ADD, 1);
-	);
+        Alter(@var1, ADD, 2);
+    );
+    Alter(@var1, SUB, 1);
+    Signal(@var1, 1);
+    EndSignal();
+
+    // 1
+    Values(@var1, ViewSignal(1));
+    If @var1 == 0 (
+        Signal(1, 1);
+        EndSignal();
+    );
 );

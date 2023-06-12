@@ -101,8 +101,12 @@ def p_variable_declaration(p):
 
 
 def p_type_value(p):
-    '''type_value : LPAREN type COMMA value RPAREN'''
-    p[0] = [p[2], p[4]]
+    '''type_value : LPAREN type COMMA value RPAREN
+                  | LPAREN type COMMA LPAREN value RPAREN RPAREN'''
+    if len(p) == 6:
+        p[0] = [p[2], p[4]]
+    else:
+        p[0] = [p[2], p[5]]
 
 
 def p_type(p):
@@ -117,7 +121,10 @@ def p_value(p):
              | BOOLEAN
              | STRING
              | ID
-             | arith_op'''
+             | arith_op
+             | is_true_function
+             | alter_variable
+             | view_signal_function'''
     p[0] = value(p[1])
 
 

@@ -76,7 +76,6 @@ def t_STRING(t):
     return t
 
 
-# No return value. Token discarded
 def t_COMMENT(t):
     r'\/\/.*'
     return t

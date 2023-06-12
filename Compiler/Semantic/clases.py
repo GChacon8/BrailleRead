@@ -35,6 +35,15 @@ class value(Instruction):
         if verifyType(self.value, MathValueNegative):
             self.value = self.value.eval(program, symbolTable)
 
+        if verifyType(self.value, IsTrueFunction):
+            self.value = self.value.getResult(program, symbolTable)
+
+        if verifyType(self.value, AlterVariable):
+            self.value = self.value.getResult(program, symbolTable)
+
+        if verifyType(self.value, ViewSignalFunction):
+            self.value = self.value.getResult(program, symbolTable)
+
         result = self.value
         self.value = self.temp
         return result
@@ -189,6 +198,8 @@ class EndSignalFunction(Instruction):
         self.scope = "local"
 
     def eval(self, program, symbolTable):
+        for i in range(6):
+            update(str(i + 1), 0, program, symbolTable)
         self.end_signal(program)
 
 

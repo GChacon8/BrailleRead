@@ -90,6 +90,6 @@ class Procedure(Instruction):
 
     def eval(self, program, symbolTable):
         if program.symbolTable.existProcedure(self.ID):
-            program.semanticError.procedureAlreadyDefined()
+            program.semanticError.procedureAlreadyDefined(self.ID)
         else:
             program.symbolTable.addProcedureSymbol(self.ID, self)
