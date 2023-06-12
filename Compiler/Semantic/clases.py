@@ -193,7 +193,7 @@ class EndSignalFunction(Instruction):
 
 
     def end_signal(self, program):
-        output = "EndSignal;" + "z"
+        output = "EndSignal;" + "zzz"
         program.programOutput.append(output)
 
 
