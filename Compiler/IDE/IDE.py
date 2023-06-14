@@ -157,6 +157,7 @@ class IDE(object):
     def new_file(self, event=None):
         # Elimina el contenido del área de texto y muestra un mensaje.
         self.coding_area.delete("1.0", tk.END)
+        self.master.title("BrailleRead IDE")
         self.filepath = ""
         self.saved = False
 
