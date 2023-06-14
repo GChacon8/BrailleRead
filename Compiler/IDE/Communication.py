@@ -50,7 +50,7 @@ def pre_send_serial(text):
 def open_serial():
     global ser
     if ser is None:
-        ser = serial.Serial("COM5", 9600)
+        ser = serial.Serial("COM3", 9600)
 
 
 def close_serial():

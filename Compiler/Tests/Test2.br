@@ -2,6 +2,7 @@
 
 Proc @Master(
     PrintValues("Hello World!");
+    Call(@proc1);
 );
 
 Proc @proc1(
@@ -88,4 +89,5 @@ Proc @proc6(
         PrintValues("Adios");
     );
 );
+
 
