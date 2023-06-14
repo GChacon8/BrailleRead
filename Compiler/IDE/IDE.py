@@ -2,6 +2,7 @@ import os
 import tkinter as tk
 from Compiler import *
 from tkinter import messagebox
+from tkinter import scrolledtext
 from tkinter.filedialog import asksaveasfilename, askopenfilename
 import sys
 sys.path.append("..")
@@ -46,8 +47,8 @@ class IDE(object):
 
         # Crea un área de texto para editar el código.
         self.coding_area = tk.Text(self.master)
-        self.coding_area = tk.Text(root, height=25, width=129, bg= "#282C34", fg='light gray')
-        self.coding_area.place(x=50,y=10)
+        self.coding_area = scrolledtext.ScrolledText(root, height=25, width=127, bg= "#282C34", fg='light gray')
+        self.coding_area.place(x=50, y=10)
         self.coding_area.bind('<Key>', self.changes_made)
         self.coding_area.bind('<Motion>', self.line_number)
         self.coding_area.bind('<MouseWheel>', self.line_number)
