@@ -1,9 +1,9 @@
-from Compiler import *
 import tkinter as tk
 from tkinter import messagebox
 from tkinter.filedialog import asksaveasfilename, askopenfilename
 import sys
 sys.path.append("..")
+from Compiler import *
 
 
 class IDE(object):
@@ -37,19 +37,14 @@ class IDE(object):
 
         # Crea un área de texto para editar el código.
         self.coding_area = tk.Text(self.master)
-        self.coding_area = tk.Text(root, height=21, width=129, bg= "#1E1E1E", fg='aqua')
+        self.coding_area = tk.Text(root, height=25, width=129, bg= "#1E1E1E", fg='aqua')
         self.coding_area.place(x=50,y=10)
-        self.coding_area.bind('<Key>', self.line_number)
         self.coding_area.bind('<Key>', self.changes_made)
         self.coding_area.bind('<Motion>', self.line_number)
         self.coding_area.bind('<MouseWheel>', self.line_number)
         self.coding_area.bind('<Tab>', self.insert_spaces)
         self.coding_area.bind('<Return>', self.handle_enter)
         self.coding_area.config(insertbackground='white')
-
-        self.error_area = tk.Text(self.master)
-        self.error_area = tk.Text(root, height=10, width=134, bg= "#1E1E1E", fg='light gray', state='disabled')
-        self.error_area.place(x=10,y=470)
         
         self.output_area = tk.Text(self.master)
         self.output_area = tk.Text(root, height=10, width=134, bg= "#1E1E1E", fg='light gray', state='disabled')
@@ -63,7 +58,6 @@ class IDE(object):
         self.output = tk.Label(self.master)
         self.output = tk.Label(root, text= "Output", font= ('Segoe UI', '10', 'bold'), bg= '#1E1E1E', fg='light gray')
         self.output.place(x=10,y=440)
-
 
         # Habilitar la funcionalidad de deshacer y rehacer
         self.coding_area.configure(undo=True)
@@ -100,6 +94,7 @@ class IDE(object):
         else:
             tk.messagebox.showwarning("Warning", "You must save your changes before running the program")
             self.save_file_as()
+            self.run_program()
 
     def compile_program(self):
         if self.filepath != "" and self.saved:
@@ -126,6 +121,7 @@ class IDE(object):
         else:
             tk.messagebox.showwarning("Warning", "You must save your changes before running the program")
             self.save_file_as()
+            self.compile_program()
 
 
     def redo(self, event=None):
@@ -144,7 +140,7 @@ class IDE(object):
 
     def open_file(self):
         # Abre un cuadro de diálogo para seleccionar un archivo y muestra su contenido en el área de texto.
-        self.filepath = askopenfilename(defaultextension=".br", filetypes=[("Text Files", "*.br"), ("All Files", "*.*")])
+        self.filepath = askopenfilename(defaultextension=".br", filetypes=[("Braille Read", "*.br"), ("All Files", "*.*")])
         if self.filepath:
             with open(self.filepath, "r") as file:
                 self.coding_area.delete("1.0", tk.END)
@@ -153,8 +149,7 @@ class IDE(object):
 
     def save_file_as(self):
         # Abre un cuadro de diálogo para seleccionar la ubicación y el nombre del archivo y guarda el contenido del área de texto.
-        self.filepath = asksaveasfilename(defaultextension=".br", filetypes=[("Text Files", "*.br"), ("All Files", "*.*")])
-        print(self.filepath)
+        self.filepath = asksaveasfilename(defaultextension=".br", filetypes=[("Braille Read", "*.br"), ("All Files", "*.*")])
         if self.filepath:
             with open(self.filepath, "w") as file:
                 file.write(self.coding_area.get("1.0", tk.END))
@@ -163,7 +158,6 @@ class IDE(object):
         self.saved = True
 
     def save_file(self):
-        print(self.filepath)
         if self.filepath:
             with open(self.filepath, "w") as file:
                 file.write(self.coding_area.get("1.0", tk.END))
@@ -186,6 +180,16 @@ class IDE(object):
         self.lineno_area.config(state="disabled")
 
     def changes_made(self, event):
+        last_line = self.coding_area.index(tk.END)
+        first_line = self.coding_area.index('@0,0')
+        last_line_int = int(last_line.split('.')[0])-1
+        first_line_int = int(first_line.split('.')[0])-1
+        self.lineno_area.config(state="normal")
+        self.lineno_area.delete("1.0", tk.END)
+        for i in range(first_line_int, last_line_int):
+            self.lineno_area.insert(tk.END, i+1)
+            self.lineno_area.insert(tk.END, "\n")
+        self.lineno_area.config(state="disabled")
         self.saved = False
 
     def insert_spaces(self, event):
