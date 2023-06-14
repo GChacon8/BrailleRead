@@ -13,7 +13,7 @@ class IDE(object):
         self.master.title("BrailleRead IDE")
         self.master.geometry("1100x650")
         self.master.resizable(False, False)
-        self.master.configure(bg='#1E1E1E')
+        self.master.configure(bg='#21252B')
 
         # Centrar la ventana en la pantalla
         screen_width = self.master.winfo_screenwidth()
@@ -46,7 +46,7 @@ class IDE(object):
 
         # Crea un área de texto para editar el código.
         self.coding_area = tk.Text(self.master)
-        self.coding_area = tk.Text(root, height=25, width=129, bg= "#1E1E1E", fg='aqua')
+        self.coding_area = tk.Text(root, height=25, width=129, bg= "#282C34", fg='light gray')
         self.coding_area.place(x=50,y=10)
         self.coding_area.bind('<Key>', self.changes_made)
         self.coding_area.bind('<Motion>', self.line_number)
@@ -56,16 +56,16 @@ class IDE(object):
         self.coding_area.config(insertbackground='white')
         
         self.output_area = tk.Text(self.master)
-        self.output_area = tk.Text(root, height=10, width=134, bg= "#1E1E1E", fg='light gray', state='disabled')
+        self.output_area = tk.Text(root, height=10, width=134, bg= "#282C34", fg='light gray', state='disabled')
         self.output_area.place(x=10,y=470)
         
         self.lineno_area = tk.Text(self.master)
-        self.lineno_area = tk.Text(root, height=25, width=3, bg= '#1E1E1E', fg='light gray', bd=0)
+        self.lineno_area = tk.Text(root, height=25, width=3, bg= '#21252B', fg='light gray', bd=0)
         self.lineno_area.place(x=10,y=10)
         self.lineno_area.config(state='disabled')
 
         self.output = tk.Label(self.master)
-        self.output = tk.Label(root, text= "Output", font= ('Segoe UI', '10', 'bold'), bg= '#1E1E1E', fg='light gray')
+        self.output = tk.Label(root, text= "Output", font= ('Segoe UI', '10', 'bold'), bg= '#21252B', fg='light gray')
         self.output.place(x=10,y=440)
 
         # Habilitar la funcionalidad de deshacer y rehacer
