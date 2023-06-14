@@ -1,0 +1,91 @@
+// Test2
+
+Proc @Master(
+    PrintValues("Hello World!");
+);
+
+Proc @proc1(
+    New @var1, (Num, 2);
+
+    // #
+    Repeat(
+        Signal(@var1, 1);
+        If @var1 >= 6(
+            Break;
+        );
+        Alter(@var1, ADD, 2);
+    );
+    Alter(@var1, SUB, 1);
+    Signal(@var1, 1);
+    EndSignal();
+
+    // 1
+    Values(@var1, ViewSignal(1));
+    If @var1 == 0 (
+        Signal(1, 1);
+        EndSignal();
+    );
+);
+
+Proc @proc2(
+    New @var123, (Num, 2);
+
+    Case @var123
+        When 1 Then
+            (Signal(1, 1);)
+        When 2 Then
+            (Signal(2, 1);)
+        When 3 Then
+            (Signal(3, 1);)
+        Else
+            (Signal(6, 1););
+);
+
+Proc @proc3(
+    New @var123, (Num, 2);
+
+    Case @var123
+        When 1 Then
+            (Signal(1, 1);)
+        When 2 Then
+            (Signal(2, 1);)
+        When 3 Then
+            (Signal(3, 1););
+);
+
+Proc @proc4(
+    New @var1, (Bool, True);
+
+    While IsTrue(@var1) (
+        PrintValues("El estado del motor 2 es: ", ViewSignal(2));
+        Signal(2, 1);
+        PrintValues("El estado del motor 2 es: ", ViewSignal(2));
+        New @var2, (Num, 23);
+        PrintValues("El valor de '@var2' es: ", @var2);
+        Values(@var2, 12);
+        PrintValues("El nuevo valor de '@var2' es: ", @var2);
+        AlterB(@var1);
+    );
+);
+
+Proc @proc5(
+    New @variable1, (Num, 1);
+    Until (
+        PrintValues("El valor de '@variable1' es: ", @variable1);
+        Signal(3, 1);
+        Values(@variable1, Alter(@variable1, ADD, 1));
+    ) @variable1 > 10;
+);
+
+Proc @proc6(
+    Repeat (
+        PrintValues("Hola");
+        Signal(2, 1);
+        Signal(3, 1);
+        Break;
+        Signal(2, 0);
+        Signal(3, 0);
+        PrintValues("Adios");
+    );
+);
+
