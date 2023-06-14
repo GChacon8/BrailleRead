@@ -1,9 +1,9 @@
 import tkinter as tk
+from Compiler import *
 from tkinter import messagebox
 from tkinter.filedialog import asksaveasfilename, askopenfilename
 import sys
 sys.path.append("..")
-from Compiler import *
 
 
 class IDE(object):
@@ -13,6 +13,14 @@ class IDE(object):
         self.master.geometry("1100x650")
         self.master.resizable(False, False)
         self.master.configure(bg='#1E1E1E')
+
+        # Centrar la ventana en la pantalla
+        screen_width = self.master.winfo_screenwidth()
+        screen_height = self.master.winfo_screenheight()
+        x = (screen_width - 1100) // 2
+        y = (screen_height - 650) // 2
+        self.master.geometry(f"{1100}x{650}+{x}+{y-30}")
+
         self.saved = False
         self.filepath = ""
         self.create_widgets()
