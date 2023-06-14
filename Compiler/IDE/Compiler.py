@@ -9,7 +9,7 @@ sys.path.append("..")
 def compile_code(code):
     res1 = None
     try:
-        res1 = systax_analysis(code)
+        res1, lexical_errors, syntax_errors = systax_analysis(code)
     except:
         pass
 
@@ -30,7 +30,7 @@ def compile_code(code):
 def run_code(code):
     res2 = None
     try:
-        res2 = systax_analysis(code)
+        res2, lexical_errors, syntax_errors = systax_analysis(code)
     except:
         pass
 

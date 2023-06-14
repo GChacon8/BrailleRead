@@ -333,15 +333,22 @@ def p_empty(p):
 def p_error(p):
     if p:
         syntax_errors.append(f"Syntax error at line {p.lineno}, column {find_column(data, p)}: Unexpected token {p.value}")
+        return
     else:
         syntax_errors.append("Syntax error: Unexpected end of input")
+        return
 
 
 def systax_analysis(source_code):
-    global data, systax_comments
+    global data, syntax_errors, systax_comments
     data = source_code
+    syntax_errors = []
     systax_comments = []
-    lexical_analysis()
+    lexical_errors = lexical_analysis()
     parser = yacc.yacc(start="program")
-    result = parser.parse(source_code)
-    return result
+    try:
+        result = parser.parse(source_code)
+    except:
+        if lexical_errors:
+            return None, lexical_errors, []
+    return result, lexical_errors, syntax_errors

@@ -1,3 +1,4 @@
+import os
 import tkinter as tk
 from Compiler import *
 from tkinter import messagebox
@@ -33,10 +34,10 @@ class IDE(object):
         prog_menu = tk.Menu(menubar, tearoff=0)
         menubar.add_cascade(label="Program", menu=prog_menu)
 
-        filemenu.add_command(label="New", command=self.new_file)
-        filemenu.add_command(label="Open File", command=self.open_file)
-        filemenu.add_command(label="Save As", command=self.save_file_as)
-        filemenu.add_command(label="Save", command=self.save_file)
+        filemenu.add_command(label="New File        Ctrl+N", command=self.new_file)
+        filemenu.add_command(label="Open...          Ctrl+O", command=self.open_file)
+        filemenu.add_command(label="Save               Ctrl+S", command=self.save_file)
+        filemenu.add_command(label="Save As...", command=self.save_file_as)
         
         prog_menu.add_command(label="Compile", command=self.compile_program)
         prog_menu.add_command(label="Run", command=self.run_program)
@@ -72,12 +73,23 @@ class IDE(object):
 
         def undo(event):
             self.coding_area.event_generate('<<Undo>>')
+            self.saved = False
 
-        self.coding_area.bind('<Control-z>', undo)
 
-        self.coding_area.bind('<Control-y>', self.redo)
+        self.master.bind('<Control-z>', undo)
+
+        self.master.bind('<Control-y>', self.redo)
+
+        self.master.bind('<Control-n>', self.new_file)
+
+        self.master.bind('<Control-o>', self.open_file)
+
+        self.master.bind('<Control-s>', self.save_file)
 
     def run_program(self):
+        self.output_area.configure(state='normal')
+        self.output_area.delete("1.0", tk.END)
+        self.output_area.configure(state='disabled')
         if self.filepath != "" and self.saved:
             with open(self.filepath, "r") as file:
                 result = run_code(file.read())
@@ -87,7 +99,7 @@ class IDE(object):
                 for ele in result:
                     self.output_area.insert(tk.END, ele + "\n")
                 self.output_area.configure(state='disabled')
-        elif self.filepath != "" and self.saved == False:
+        elif self.filepath != "" and self.saved is False:
             request = tk.messagebox.askyesno("Save?", "Do you want to save your last changes before running?")
             if request:
                 self.save_file()
@@ -105,6 +117,9 @@ class IDE(object):
             self.run_program()
 
     def compile_program(self):
+        self.output_area.configure(state='normal')
+        self.output_area.delete("1.0", tk.END)
+        self.output_area.configure(state='disabled')
         if self.filepath != "" and self.saved:
             with open(self.filepath, "r") as file:
                 result = compile_code(file.read())
@@ -114,7 +129,7 @@ class IDE(object):
                 for ele in result:
                     self.output_area.insert(tk.END, ele + "\n")
                 self.output_area.configure(state='disabled')
-        elif self.filepath != "" and self.saved == False:
+        elif self.filepath != "" and self.saved is False:
             request = tk.messagebox.askyesno("Save?", "Do you want to save your last changes before compiling?")
             if request:
                 self.save_file()
@@ -131,48 +146,51 @@ class IDE(object):
             self.save_file_as()
             self.compile_program()
 
-
     def redo(self, event=None):
         # Rehacer la última acción deshecha
         try:
             self.coding_area.edit_redo()
+            self.saved = False
         except:
             pass
 
-    def new_file(self):
+    def new_file(self, event=None):
         # Elimina el contenido del área de texto y muestra un mensaje.
         self.coding_area.delete("1.0", tk.END)
-        messagebox.showinfo("Nuevo archivo", "Se ha creado un nuevo archivo.")
         self.filepath = ""
         self.saved = False
 
-    def open_file(self):
+    def open_file(self, event=None):
         # Abre un cuadro de diálogo para seleccionar un archivo y muestra su contenido en el área de texto.
         self.filepath = askopenfilename(defaultextension=".br", filetypes=[("Braille Read", "*.br"), ("All Files", "*.*")])
+        path = self.filepath
+        path = path.replace("/", "\\")
+        file_name = os.path.basename(path)
+        self.master.title("BrailleRead IDE      " + file_name + " - " + path)
         if self.filepath:
             with open(self.filepath, "r") as file:
                 self.coding_area.delete("1.0", tk.END)
                 self.coding_area.insert(tk.END, file.read())
         self.saved = True
 
-    def save_file_as(self):
-        # Abre un cuadro de diálogo para seleccionar la ubicación y el nombre del archivo y guarda el contenido del área de texto.
-        self.filepath = asksaveasfilename(defaultextension=".br", filetypes=[("Braille Read", "*.br"), ("All Files", "*.*")])
+    def save_file(self, event=None):
         if self.filepath:
             with open(self.filepath, "w") as file:
                 file.write(self.coding_area.get("1.0", tk.END))
-            messagebox.showinfo("Save File", "File has been saved correctly.")
-
-        self.saved = True
-
-    def save_file(self):
-        if self.filepath:
-            with open(self.filepath, "w") as file:
-                file.write(self.coding_area.get("1.0", tk.END))
-            messagebox.showinfo("Save File", "File has been saved correctly.")
         else:
             self.save_file_as()
+        self.saved = True
 
+    def save_file_as(self, event=None):
+        # Abre un cuadro de diálogo para seleccionar la ubicación y el nombre del archivo y guarda el contenido del área de texto.
+        self.filepath = asksaveasfilename(defaultextension=".br", filetypes=[("Braille Read", "*.br"), ("All Files", "*.*")])
+        path = self.filepath
+        path = path.replace("/", "\\")
+        file_name = os.path.basename(path)
+        self.master.title("BrailleRead IDE      " + file_name + " - " + path)
+        if self.filepath:
+            with open(self.filepath, "w") as file:
+                file.write(self.coding_area.get("1.0", tk.END))
         self.saved = True
 
     def line_number(self, event):
@@ -202,6 +220,7 @@ class IDE(object):
 
     def insert_spaces(self, event):
         self.coding_area.insert(tk.INSERT, " " * 4)
+        self.saved = False
         return 'break'
 
     def handle_enter(self, event):
@@ -217,6 +236,7 @@ class IDE(object):
 
         # Insertar una nueva línea con la indentación
         self.coding_area.insert(tk.INSERT, "\n" + indentation)
+        self.saved = False
         return "break"
 
 root = tk.Tk()

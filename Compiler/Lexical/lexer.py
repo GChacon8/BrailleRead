@@ -136,5 +136,7 @@ def t_error(t):
 
 
 def lexical_analysis():
-    global lexer
+    global lexer, lexical_errors
+    lexical_errors = []
     lexer = lex.lex()
+    return lexical_errors
