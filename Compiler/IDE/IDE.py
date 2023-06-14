@@ -38,7 +38,7 @@ class IDE(object):
         filemenu.add_command(label="New File        Ctrl+N", command=self.new_file)
         filemenu.add_command(label="Open...          Ctrl+O", command=self.open_file)
         filemenu.add_command(label="Save               Ctrl+S", command=self.save_file)
-        filemenu.add_command(label="Save As...", command=self.save_file_as)
+        filemenu.add_command(label="Save As...      Ctrl+Shift+S", command=self.save_file_as)
         
         prog_menu.add_command(label="Compile", command=self.compile_program)
         prog_menu.add_command(label="Run", command=self.run_program)
@@ -78,14 +78,22 @@ class IDE(object):
 
 
         self.master.bind('<Control-z>', undo)
+        self.master.bind('<Control-Z>', undo)
 
         self.master.bind('<Control-y>', self.redo)
+        self.master.bind('<Control-Y>', self.redo)
 
         self.master.bind('<Control-n>', self.new_file)
+        self.master.bind('<Control-N>', self.new_file)
 
         self.master.bind('<Control-o>', self.open_file)
+        self.master.bind('<Control-O>', self.open_file)
 
         self.master.bind('<Control-s>', self.save_file)
+        self.master.bind('<Control-S>', self.save_file)
+
+        self.master.bind('<Control-Shift-s>', self.save_file_as)
+        self.master.bind('<Control-Shift-S>', self.save_file_as)
 
     def run_program(self):
         self.output_area.configure(state='normal')
