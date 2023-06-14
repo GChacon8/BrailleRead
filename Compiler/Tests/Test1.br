@@ -1,0 +1,249 @@
+// Test1
+
+Proc @Master(
+    PrintValues("Hello World!");
+    Call(@a);
+    Call(@b);
+    Call(@c);
+);
+
+// #
+Proc @num(
+    Signal(2, 1);
+    Signal(4, 1);
+    Signal(5, 1);
+    Signal(6, 1);
+    EndSignal();
+);
+
+// Capital letter
+Proc @mayus(
+    Signal(2, 1);
+    Signal(6, 1);
+    EndSignal();
+);
+
+// a - 1
+Proc @a(
+    Signal(1, 1);
+    EndSignal();
+);
+
+// b - 2
+Proc @b(
+    Signal(1, 1);
+    Signal(3, 1);
+    EndSignal();
+);
+
+// c - 3
+Proc @c(
+    Signal(1, 1);
+    Signal(2, 1);
+    EndSignal();
+);
+
+// d - 4
+Proc @d(
+    Signal(1, 1);
+    Signal(2, 1);
+    Signal(4, 1);
+    EndSignal();
+);
+
+// e - 5
+Proc @e(
+    Signal(1, 1);
+    Signal(4, 1);
+    EndSignal();
+);
+
+// f - 6
+Proc @f(
+    Signal(1, 1);
+    Signal(2, 1);
+    Signal(3, 1);
+    EndSignal();
+);
+
+// g - 7
+Proc @g(
+    Signal(1, 1);
+    Signal(2, 1);
+    Signal(3, 1);
+    Signal(4, 1);
+    EndSignal();
+);
+
+// h - 8
+Proc @h(
+    Signal(1, 1);
+    Signal(3, 1);
+    Signal(4, 1);
+    EndSignal();
+);
+
+// i - 9
+Proc @i(
+    Signal(2, 1);
+    Signal(3, 1);
+    EndSignal();
+);
+
+// j - 0
+Proc @j(
+    Signal(2, 1);
+    Signal(3, 1);
+    Signal(4, 1);
+    EndSignal();
+);
+
+// k
+Proc @k(
+    Signal(1, 1);
+    Signal(5, 1);
+    EndSignal();
+);
+
+// l
+Proc @l(
+    Signal(1, 1);
+    Signal(3, 1);
+    Signal(5, 1);
+    EndSignal();
+);
+
+// m
+Proc @m(
+    Signal(1, 1);
+    Signal(2, 1);
+    Signal(5, 1);
+    EndSignal();
+);
+
+// n
+Proc @n(
+    Signal(1, 1);
+    Signal(2, 1);
+    Signal(4, 1);
+    Signal(5, 1);
+    EndSignal();
+);
+
+// ñ
+Proc @ñ(
+    Signal(1, 1);
+    Signal(2, 1);
+    Signal(3, 1);
+    Signal(4, 1);
+    Signal(6, 1);
+    EndSignal();
+);
+
+// o
+Proc @o(
+    Signal(1, 1);
+    Signal(4, 1);
+    Signal(5, 1);
+    EndSignal();
+);
+
+// p
+Proc @p(
+    Signal(1, 1);
+    Signal(2, 1);
+    Signal(3, 1);
+    Signal(5, 1);
+    EndSignal();
+);
+
+// q
+Proc @q(
+    Signal(1, 1);
+    Signal(2, 1);
+    Signal(3, 1);
+    Signal(4, 1);
+    Signal(5, 1);
+    EndSignal();
+);
+
+// r
+Proc @r(
+    Signal(1, 1);
+    Signal(3, 1);
+    Signal(4, 1);
+    Signal(5, 1);
+    EndSignal();
+);
+
+// s
+Proc @s(
+    Signal(2, 1);
+    Signal(3, 1);
+    Signal(5, 1);
+    EndSignal();
+);
+
+// t
+Proc @t(
+    Signal(2, 1);
+    Signal(3, 1);
+    Signal(4, 1);
+    Signal(5, 1);
+    EndSignal();
+);
+
+// u
+Proc @u(
+    Signal(1, 1);
+    Signal(5, 1);
+    Signal(6, 1);
+    EndSignal();
+);
+
+// v
+Proc @v(
+    Signal(1, 1);
+    Signal(3, 1);
+    Signal(5, 1);
+    Signal(6, 1);
+    EndSignal();
+);
+
+// w
+Proc @w(
+    Signal(2, 1);
+    Signal(3, 1);
+    Signal(4, 1);
+    Signal(6, 1);
+    EndSignal();
+);
+
+// x
+Proc @x(
+    Signal(1, 1);
+    Signal(2, 1);
+    Signal(5, 1);
+    Signal(6, 1);
+    EndSignal();
+);
+
+// y
+Proc @y(
+    Signal(1, 1);
+    Signal(2, 1);
+    Signal(4, 1);
+    Signal(5, 1);
+    Signal(6, 1);
+    EndSignal();
+);
+
+// z
+Proc @z(
+    Signal(1, 1);
+    Signal(4, 1);
+    Signal(5, 1);
+    Signal(6, 1);
+    EndSignal();
+);
+
